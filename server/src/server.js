@@ -1,4 +1,6 @@
 /* eslint-disable no-console */
+const path = require('path');
+const helmet = require('helmet');
 
 module.exports = ({ app, promisify, consumer, socketIO, envVariables }) => {
   let server;
@@ -7,6 +9,23 @@ module.exports = ({ app, promisify, consumer, socketIO, envVariables }) => {
   return {
     start: async () => {
       try {
+        app.use(
+          helmet({
+            frameguard: {
+              action: 'deny',
+            },
+          }),
+        );
+
+        app.use((req, res, next) =>
+          (req.method === 'GET' || req.method === 'HEAD') && req.accepts('html')
+            ? res.sendFile(
+                path.resolve(__dirname, '../../app/build', 'index.html'),
+                next,
+              )
+            : next(),
+        );
+
         server = app.listen(envVariables.PORT, () => {
           console.log('Application Ready');
           console.log(`Listening on ${server.address().port}`);
@@ -16,6 +35,7 @@ module.exports = ({ app, promisify, consumer, socketIO, envVariables }) => {
 
           io.on('connection', socket => {
             consumerInstance.on('message', message => {
+              console.log('Got message', message);
               socket.emit('kafkaEvent', message);
             });
           });

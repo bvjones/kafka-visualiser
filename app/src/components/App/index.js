@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import openSocket from "socket.io-client";
 import get from "lodash.get";
 import Counter from '../Counter';
+import Visualiser from '../Visualiser';
 import styles from './index.module.css';
 
 class App extends Component {
@@ -51,6 +52,7 @@ class App extends Component {
     return (
       <div>
         <h1>kafka Visualiser</h1>
+        <Visualiser />
         <div className={styles.countersContainer}>
           {counters}
         </div>
