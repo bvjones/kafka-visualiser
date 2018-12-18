@@ -12,20 +12,21 @@ function Circle(brush, x = 0, y = 150, dx = 5, dy = 0) {
   this.draw = function () {
     brush.beginPath()
     brush.arc(this.x, this.y, this.radius, 0, Math.PI * 2, false)
-    brush.strokeStyle = 'black'
+    brush.strokeStyle = this.color;
     brush.fillStyle = this.color
     brush.fill()
     brush.stroke()
   }
 
   //reverse the x or y coordinates when the circle touches the side
+  this.onScreen = function(canvasWidth) {
+    if (this.x + this.radius > canvasWidth) {
+      return false;
+    }
+    return true;
+  }
+
   this.update = function () {
-    // if (this.x + this.radius > innerWidth || this.x - this.radius < 0) {
-    //   this.dx = -this.dx
-    // }
-    // if (this.y + this.radius > innerHeight || this.y - this.radius < 0) {
-    //   this.dy = -this.dy
-    // }
     this.x += this.dx
     this.y += this.dy
 
@@ -43,16 +44,22 @@ export default class Canvas extends Component {
   }
 
   updateAnimationState() {
-    this.rAF = requestAnimationFrame(this.updateAnimationState);
-
     const canvas = this.canvasRef.current;
     const brush = canvas.getContext('2d');
 
     brush.clearRect(0, 0, 1500, 300);
 
     for (let i = 0; i < this.circles.length; i++){
-      this.circles[i].update()
+      if (this.circles[i]) {
+        this.circles[i].update();
+      }
     }
+
+    this.circles = this.circles.filter((circle) => {
+      return circle.onScreen(canvas.width);
+    })
+
+    this.rAF = requestAnimationFrame(this.updateAnimationState);
   }
 
   componentDidMount() {
@@ -74,6 +81,8 @@ export default class Canvas extends Component {
         this.circles.push(new Circle(brush))
       }
     });
+
+    console.log(this.circles.length);
   }
 
   render() {
