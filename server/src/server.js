@@ -1,7 +1,8 @@
 /* eslint-disable no-console */
 
-module.exports = ({ app, promisify, consumer }) => {
+module.exports = ({ app, promisify, consumer, socketIO }) => {
   let server;
+  let io;
 
   return {
     start: async () => {
@@ -9,6 +10,16 @@ module.exports = ({ app, promisify, consumer }) => {
         server = app.listen(3000, () => {
           console.log('Application Ready');
           console.log(`Listening on ${server.address().port}`);
+
+          io = socketIO(server);
+
+          io.on('connection', socket => {
+            socket.emit('news', { hello: 'world' });
+            socket.on('my other event', data => {
+              console.log(data);
+            });
+          });
+
           consumer.start();
         });
       } catch (err) {

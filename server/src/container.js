@@ -3,6 +3,7 @@
 const { createContainer, asValue, asFunction } = require('awilix');
 const kafka = require('kafka-node');
 const express = require('express');
+const socketIO = require('socket.io');
 const { promisify } = require('util');
 const getEnvVar = require('./getEnvVar');
 
@@ -30,6 +31,7 @@ container.register({
   app: asFunction(express).singleton(),
   server: asFunction(server).singleton(),
   envVariables: asValue(envVariables),
+  socketIO: asValue(socketIO),
 });
 
 container.register({
