@@ -1,0 +1,11 @@
+
+.counterContainer {
+  text-align: center;
+}
+
+.count {
+  display: block;
+  margin-bottom: 20px;
+  font-size: 40px;
+  font-weight: bold;
+}
