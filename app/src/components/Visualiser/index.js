@@ -18,6 +18,10 @@ export default class Visualiser extends Component {
     this.rAF = requestAnimationFrame(this.updateAnimationState);
   }
 
+  // componentDidUpdate() {
+  //   console.log(this.state)
+  // }
+
   static getDerivedStateFromProps(props, state) {
     let newState = { ...state }
 
@@ -32,7 +36,7 @@ export default class Visualiser extends Component {
   }
 
   updateAnimationState() {
-    this.setState(prevState => ({ angle: prevState.angle + 1 }));
+    this.forceUpdate();
     this.rAF = requestAnimationFrame(this.updateAnimationState);
   }
 
@@ -41,7 +45,7 @@ export default class Visualiser extends Component {
   }
 
   render() {
-    return <Canvas angle={this.state.angle} />;
+    return <Canvas events={this.state.events}/>;
   }
 }
 
