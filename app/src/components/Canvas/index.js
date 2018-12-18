@@ -38,6 +38,29 @@ export default class Canvas extends Component {
     super(props);
     this.canvasRef = React.createRef();
     this.circles = [];
+
+    this.updateAnimationState = this.updateAnimationState.bind(this);
+  }
+
+  updateAnimationState() {
+    this.rAF = requestAnimationFrame(this.updateAnimationState);
+
+    const canvas = this.canvasRef.current;
+    const brush = canvas.getContext('2d');
+
+    brush.clearRect(0, 0, 1500, 300);
+
+    for (let i = 0; i < this.circles.length; i++){
+      this.circles[i].update()
+    }
+  }
+
+  componentDidMount() {
+    this.rAF = requestAnimationFrame(this.updateAnimationState);
+  }
+
+  componentWillUnmount() {
+    cancelAnimationFrame(this.rAF);
   }
 
   componentDidUpdate() {

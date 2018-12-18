@@ -7,15 +7,7 @@ import Canvas from '../Canvas';
 export default class Visualiser extends Component {
   constructor(props) {
     super(props);
-    this.state = { events: {
-
-    }
-  };
-    this.updateAnimationState = this.updateAnimationState.bind(this);
-  }
-
-  componentDidMount() {
-    this.rAF = requestAnimationFrame(this.updateAnimationState);
+    this.state = { events: {} };
   }
 
   // componentDidUpdate() {
@@ -33,15 +25,6 @@ export default class Visualiser extends Component {
     })
 
     return { events: newState.events };
-  }
-
-  updateAnimationState() {
-    this.forceUpdate();
-    this.rAF = requestAnimationFrame(this.updateAnimationState);
-  }
-
-  componentWillUnmount() {
-    cancelAnimationFrame(this.rAF);
   }
 
   render() {
