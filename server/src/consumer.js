@@ -10,9 +10,7 @@ module.exports = ({ kafka, envVariables }) => {
       });
       consumer = new Consumer(client, [{ topic: process.env.TOPIC_NAME }]);
 
-      consumer.on('message', message => {
-        console.log(message);
-      });
+      return consumer;
     },
     stop: () => {
       consumer.close(true, err => {

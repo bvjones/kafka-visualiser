@@ -1,8 +1,23 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
+import openSocket from 'socket.io-client';
 import './App.css';
 
 class App extends Component {
+
+  constructor() {
+    super();
+    this.socket = null;
+  }
+
+  componentWillMount() {
+     this.socket = openSocket('http://localhost:3001');
+
+     this.socket.on('kafkaEvent', function (data) {
+      console.log(data);
+    });
+  }
+
   render() {
     return (
       <div className="App">
