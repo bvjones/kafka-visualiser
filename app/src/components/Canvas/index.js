@@ -1,13 +1,13 @@
 import React, { Component } from "react";
 import PropTypes from 'prop-types';
 
-function Circle(brush, x = 0, y = 150, dx = 5, dy = 0) {
+function Circle(brush, color, x = 0, y = 150, dx = 5, dy = 0) {
   this.x = x;
   this.y = y;
   this.dx = dx;
   this.dy = dy;
   this.radius = 5;
-  this.color = '#FFA500';
+  this.color = color;
 
   this.draw = function () {
     brush.beginPath()
@@ -78,11 +78,9 @@ export default class Canvas extends Component {
       let i;
 
       for(i = 0; i < value.increment; i++) {
-        this.circles.push(new Circle(brush))
+        this.circles.push(new Circle(brush, value.color))
       }
     });
-
-    console.log(this.circles.length);
   }
 
   render() {
