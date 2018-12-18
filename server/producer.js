@@ -1,8 +1,6 @@
 /* eslint-disable no-console */
 
 const kafka = require('kafka-node');
-const uuid = require('uuid').v4;
-const _ = require('lodash');
 
 const { Producer } = kafka;
 
@@ -19,10 +17,24 @@ client.on('connect', () => {
   );
 });
 
+const eventTypes = ['ChrisLovesKafka', 'JoshMakeTea', 'AlbertIsAwesome'];
+
 producer.on('ready', () => {
   setInterval(() => {
     producer.send(
-      [{ topic: process.env.TOPIC_NAME, message: uuid }],
+      [
+        {
+          topic: process.env.TOPIC_NAME,
+          messages: [
+            JSON.stringify({
+              metadata: {
+                eventName:
+                  eventTypes[Math.floor(Math.random() * eventTypes.length)],
+              },
+            }),
+          ],
+        },
+      ],
       (err, data) => {
         if (err) {
           console.error(err);

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import logo from './logo.svg';
 import openSocket from 'socket.io-client';
-import './App.css';
+import './index.css';
 
 class App extends Component {
 

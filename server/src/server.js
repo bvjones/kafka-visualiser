@@ -15,11 +15,8 @@ module.exports = ({ app, promisify, consumer, socketIO, envVariables }) => {
           io = socketIO(server);
 
           io.on('connection', socket => {
-            socket.emit('news', { hello: 'world' });
-
             consumerInstance.on('message', message => {
               socket.emit('kafkaEvent', message);
-              // console.log(message);
             });
           });
         });
