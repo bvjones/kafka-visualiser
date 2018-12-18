@@ -7,8 +7,7 @@ const { promisify } = require('util');
 const getEnvVar = require('./getEnvVar');
 
 const server = require('./server');
-
-const { Consumer } = kafka;
+const consumer = require('./consumer');
 
 const container = createContainer();
 
@@ -25,9 +24,6 @@ try {
   process.exit(1);
 }
 
-const client = new kafka.KafkaClient({ kafkaHost: envVariables.KAFKA_HOST });
-const consumer = new Consumer(client, [{ topic: process.env.TOPIC_NAME }]);
-
 container.register({
   kafka: asValue(kafka),
   promisify: asValue(promisify),
@@ -37,7 +33,7 @@ container.register({
 });
 
 container.register({
-  consumer: asValue(consumer),
+  consumer: asFunction(consumer).singleton(),
 });
 
 module.exports = container.cradle;
