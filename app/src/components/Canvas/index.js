@@ -2,12 +2,20 @@ import React, { Component } from "react";
 import PropTypes from "prop-types";
 import styles from "./index.module.css";
 
-function Circle({ brush, color, x = 0, y = 150, dx = 5, dy = 0, numberOfEvents }) {
+function Circle({
+  brush,
+  color,
+  x = 0,
+  y = 150,
+  dx = 5,
+  dy = 0,
+  numberOfEvents
+}) {
   this.x = x;
   this.y = y;
   this.dx = dx;
   this.dy = dy;
-  this.radius = Math.log2(5 + (numberOfEvents * 15));
+  this.radius = Math.log2(5 + numberOfEvents * 15);
   this.color = color;
 
   this.draw = function() {
@@ -76,18 +84,21 @@ export default class Canvas extends Component {
 
     Object.entries(this.props.events).forEach(({ 1: value }, index) => {
       // Dynamically set circle vertical position based on canvas height and number of event types
-      const circleY =
-        (canvas.height / (Object.keys(this.props.events).length + 1)) *
-        (index + 1);
 
-      this.circles.push(
-        new Circle({
-          brush,
-          color: value.color,
-          y: circleY,
-          numberOfEvents: value.increment
-        })
-      );
+      if (value.increment > 0) {
+        const circleY =
+          (canvas.height / (Object.keys(this.props.events).length + 1)) *
+          (index + 1);
+
+        this.circles.push(
+          new Circle({
+            brush,
+            color: value.color,
+            y: circleY,
+            numberOfEvents: value.increment
+          })
+        );
+      }
     });
   }
 
