@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import PropTypes from 'prop-types';
+import PropTypes from "prop-types";
 import get from "lodash.get";
-import ColorHash from 'color-hash'
+import ColorHash from "color-hash";
 
-import Canvas from '../Canvas';
+import Canvas from "../Canvas";
 
 const colorHash = new ColorHash();
 
@@ -11,6 +11,7 @@ export default class Visualiser extends Component {
   constructor(props) {
     super(props);
     this.state = { events: {} };
+    // this.timestamp = new Date ();
   }
 
   // componentDidUpdate() {
@@ -18,24 +19,37 @@ export default class Visualiser extends Component {
   // }
 
   static getDerivedStateFromProps(props, state) {
-    let newState = { ...state }
+    let newState = { ...state };
 
-    Object.entries(props.events).forEach(({0: name, 1: value}) => {
+    Object.entries(props.events).forEach(({ 0: name, 1: value }) => {
       newState.events[name] = {
         count: value.count,
         increment: value.count - get(state, `events[${name}].count`) || 0,
-        color: get(state, `events[${name}].color`) || colorHash.hex(name),
-      }
-    })
+        color: get(state, `events[${name}].color`) || colorHash.hex(name)
+      };
+    });
 
     return { events: newState.events };
   }
 
+  // shouldComponentUpdate() {
+  //   const timeNow = new Date ();
+
+  //   if(timeNow - this.timestamp > 16) {
+  //     this.timestamp = timeNow;
+  //     console.log('ok to update');
+  //     return true;
+  //   }
+
+  //   console.log('too soon to update');
+  //   return false;
+  // }
+
   render() {
-    return <Canvas events={this.state.events}/>;
+    return <Canvas events={this.state.events} />;
   }
 }
 
 Visualiser.propTypes = {
-  events: PropTypes.shape({}).isRequired,
-}
+  events: PropTypes.shape({}).isRequired
+};

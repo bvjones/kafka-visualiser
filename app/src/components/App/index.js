@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import openSocket from "socket.io-client";
 import get from "lodash.get";
-import Counter from '../Counter';
-import Visualiser from '../Visualiser';
-import styles from './index.module.css';
+import Counter from "../Counter";
+import Visualiser from "../Visualiser";
+import styles from "./index.module.css";
 
 class App extends Component {
   constructor() {
@@ -14,20 +14,24 @@ class App extends Component {
       events: {}
     };
 
+    this.events = {};
+
     this.incrementEventCount = this.incrementEventCount.bind(this);
   }
 
   incrementEventCount(eventName) {
     const event = get(this.state, `events[${eventName}]`);
 
-    return this.setState({
-      events: {
-        ...this.state.events,
-        [eventName]: {
-          count: event ? event.count + 1 : 1
-        }
+    return (this.events = {
+      ...this.events,
+      [eventName]: {
+        count: event ? event.count + 1 : 1
       }
     });
+  }
+
+  updateEventsState() {
+    this.setState({events: this.events});
   }
 
   componentWillMount() {
@@ -42,20 +46,24 @@ class App extends Component {
         this.incrementEventCount(eventName);
       }.bind(this)
     );
+
+    window.setInterval(() => {
+      this.updateEventsState();
+    }, 16)
   }
 
   render() {
-    const counters = Object.entries(this.state.events).map(({0: name, 1: value}) => {
-      return <Counter key={name} name={name} count={value.count} />
-    })
+    const counters = Object.entries(this.state.events).map(
+      ({ 0: name, 1: value }) => {
+        return <Counter key={name} name={name} count={value.count} />;
+      }
+    );
 
     return (
       <div>
         <h1 className={styles.title}>kafka Visualiser</h1>
-        <Visualiser events={this.state.events}/>
-        <div className={styles.countersContainer}>
-          {counters}
-        </div>
+        <Visualiser events={this.state.events} />
+        <div className={styles.countersContainer}>{counters}</div>
       </div>
     );
   }

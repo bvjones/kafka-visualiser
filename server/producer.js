@@ -25,6 +25,7 @@ const eventTypes = [
 ];
 
 producer.on('ready', () => {
+  console.log('Producing events');
   setInterval(() => {
     producer.send(
       [
@@ -40,12 +41,11 @@ producer.on('ready', () => {
           ],
         },
       ],
-      (err, data) => {
+      err => {
         if (err) {
           console.error(err);
           process.exit(1);
         }
-        console.log('Sending data: ', data);
       },
     );
   }, 200);

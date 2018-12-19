@@ -35,7 +35,6 @@ module.exports = ({ app, promisify, consumer, socketIO, envVariables }) => {
 
           io.on('connection', socket => {
             consumerInstance.on('message', message => {
-              console.log('Got message', message);
               socket.emit('kafkaEvent', message);
             });
           });
@@ -49,6 +48,7 @@ module.exports = ({ app, promisify, consumer, socketIO, envVariables }) => {
     },
     stop: async () => {
       try {
+        console.log('Stopping server');
         consumer.stop();
         await promisify(server.close).call(server);
       } catch (err) {
