@@ -20,7 +20,7 @@ class App extends Component {
   }
 
   incrementEventCount(eventName) {
-    const event = get(this.state, `events[${eventName}]`);
+    const event = get(this.events, `[${eventName}]`);
 
     return (this.events = {
       ...this.events,
@@ -31,7 +31,7 @@ class App extends Component {
   }
 
   updateEventsState() {
-    this.setState({events: this.events});
+    this.setState({ events: this.events });
   }
 
   componentWillMount() {
@@ -49,7 +49,7 @@ class App extends Component {
 
     window.setInterval(() => {
       this.updateEventsState();
-    }, 16)
+    }, 70);
   }
 
   render() {

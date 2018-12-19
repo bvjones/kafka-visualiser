@@ -11,12 +11,7 @@ export default class Visualiser extends Component {
   constructor(props) {
     super(props);
     this.state = { events: {} };
-    // this.timestamp = new Date ();
   }
-
-  // componentDidUpdate() {
-  //   console.log(this.state)
-  // }
 
   static getDerivedStateFromProps(props, state) {
     let newState = { ...state };
@@ -31,19 +26,6 @@ export default class Visualiser extends Component {
 
     return { events: newState.events };
   }
-
-  // shouldComponentUpdate() {
-  //   const timeNow = new Date ();
-
-  //   if(timeNow - this.timestamp > 16) {
-  //     this.timestamp = timeNow;
-  //     console.log('ok to update');
-  //     return true;
-  //   }
-
-  //   console.log('too soon to update');
-  //   return false;
-  // }
 
   render() {
     return <Canvas events={this.state.events} />;

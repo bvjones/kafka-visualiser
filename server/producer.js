@@ -22,6 +22,7 @@ const eventTypes = [
   'JoshMakeTea',
   'AlbertIsAwesome',
   'BenAndRick=TheBest',
+  'helloMG',
 ];
 
 producer.on('ready', () => {
@@ -48,7 +49,7 @@ producer.on('ready', () => {
         }
       },
     );
-  }, 200);
+  }, 20);
 });
 
 producer.on('error', err => {
