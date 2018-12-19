@@ -47,7 +47,7 @@ export default class Canvas extends Component {
     const canvas = this.canvasRef.current;
     const brush = canvas.getContext("2d");
 
-    brush.clearRect(0, 0, 1500, 300);
+    brush.clearRect(0, 0, canvas.width, canvas.height);
 
     for (let i = 0; i < this.circles.length; i++) {
       if (this.circles[i]) {
@@ -89,6 +89,9 @@ export default class Canvas extends Component {
   }
 
   render() {
+    const canvasWidth = window.innerWidth * 0.8;
+    const canvasHeight = window.innerHeight * 0.5;
+
     return (
       <div className={styles.canvasContainer}>
       <div className={styles.eventNames}>
@@ -96,7 +99,7 @@ export default class Canvas extends Component {
           return <h3 className={styles.eventName} key={eventType}>{eventType}</h3>
         })}
       </div>
-        <canvas width="1500" height="300" ref={this.canvasRef} />
+        <canvas width={canvasWidth} height={canvasHeight} ref={this.canvasRef} />
       </div>
     );
   }

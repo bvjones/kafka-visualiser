@@ -17,7 +17,12 @@ client.on('connect', () => {
   );
 });
 
-const eventTypes = ['ChrisLovesKafka', 'JoshMakeTea', 'AlbertIsAwesome'];
+const eventTypes = [
+  'ChrisLovesKafka',
+  'JoshMakeTea',
+  'AlbertIsAwesome',
+  'BenAndRick=TheBest',
+];
 
 producer.on('ready', () => {
   setInterval(() => {
@@ -43,7 +48,7 @@ producer.on('ready', () => {
         console.log('Sending data: ', data);
       },
     );
-  }, 500);
+  }, 200);
 });
 
 producer.on('error', err => {
