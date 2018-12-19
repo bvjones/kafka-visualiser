@@ -1,6 +1,7 @@
 /* eslint-disable no-console */
 const path = require('path');
 const helmet = require('helmet');
+const expressStaticGzip = require('express-static-gzip');
 
 module.exports = ({ app, promisify, consumer, socketIO, envVariables }) => {
   let server;
@@ -17,13 +18,13 @@ module.exports = ({ app, promisify, consumer, socketIO, envVariables }) => {
           }),
         );
 
-        app.use((req, res, next) =>
-          (req.method === 'GET' || req.method === 'HEAD') && req.accepts('html')
-            ? res.sendFile(
-                path.resolve(__dirname, '../../app/build', 'index.html'),
-                next,
-              )
-            : next(),
+        const srcFolder = '../../app/build';
+
+        app.use(
+          '/',
+          expressStaticGzip(path.join(__dirname, srcFolder), {
+            maxAge: '24h',
+          }),
         );
 
         server = app.listen(envVariables.PORT, () => {

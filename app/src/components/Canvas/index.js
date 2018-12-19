@@ -102,7 +102,7 @@ export default class Canvas extends Component {
     const canvas = this.canvasRef.current;
     const brush = canvas.getContext("2d");
 
-    const congregatePoint = canvas.width / 2;
+    const congregatePoint = canvas.width * 0.7;
     const midHeight = canvas.height / 2;
 
     Object.entries(this.props.events).forEach(({ 1: value }, index) => {
