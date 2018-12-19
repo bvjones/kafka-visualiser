@@ -3,3 +3,13 @@
   display: flex;
   justify-content: center;
 }
+
+.eventNames {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.eventName {
+  margin: 0;
+}

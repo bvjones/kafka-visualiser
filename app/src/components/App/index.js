@@ -51,7 +51,7 @@ class App extends Component {
 
     return (
       <div>
-        <h1>kafka Visualiser</h1>
+        <h1 className={styles.title}>kafka Visualiser</h1>
         <Visualiser events={this.state.events}/>
         <div className={styles.countersContainer}>
           {counters}

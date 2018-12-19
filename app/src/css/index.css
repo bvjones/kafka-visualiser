@@ -1,17 +1,7 @@
+/* CSS Reset */
+@import './reset.css';
+
 @import "./colors.css";
-@import url('https://fonts.googleapis.com/css?family=Major+Mono+Display');
-@import url('https://fonts.googleapis.com/css?family=Roboto');
+@import "./font-families.css";
+@import "./elements.css";
 
-body {
-  margin: 0;
-  padding: 0;
-  font-family: 'Roboto', sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  background-color: var(--dark-gunmetal);
-  color: var(--white);
-}
-
-h1 {
-  font-family: 'Major Mono Display', monospace;
-}

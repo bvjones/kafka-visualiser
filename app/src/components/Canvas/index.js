@@ -91,6 +91,11 @@ export default class Canvas extends Component {
   render() {
     return (
       <div className={styles.canvasContainer}>
+      <div className={styles.eventNames}>
+        {Object.keys(this.props.events).map((eventType) => {
+          return <h3 className={styles.eventName} key={eventType}>{eventType}</h3>
+        })}
+      </div>
         <canvas width="1500" height="300" ref={this.canvasRef} />
       </div>
     );

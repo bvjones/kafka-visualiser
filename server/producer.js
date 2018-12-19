@@ -43,7 +43,7 @@ producer.on('ready', () => {
         console.log('Sending data: ', data);
       },
     );
-  }, 100);
+  }, 500);
 });
 
 producer.on('error', err => {
