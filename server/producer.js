@@ -43,9 +43,9 @@ producer.on('ready', () => {
         console.log('Sending data: ', data);
       },
     );
-  }, 50);
+  }, 100);
 });
 
 producer.on('error', err => {
-  console.error('YOU FUCKED IT: ', err);
+  console.error('Producer error: ', err);
 });

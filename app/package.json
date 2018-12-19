@@ -9,6 +9,7 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
+    "color-hash": "^1.0.3",
     "lodash.get": "^4.4.2",
     "react": "^16.6.3",
     "react-dom": "^16.6.3",
