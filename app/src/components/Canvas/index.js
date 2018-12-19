@@ -9,14 +9,23 @@ function Circle({
   y = 150,
   dx = 5,
   dy = 0,
-  numberOfEvents
+  numberOfEvents,
+  congregatePoint,
+  midHeight
 }) {
+  
   this.x = x;
   this.y = y;
   this.dx = dx;
   this.dy = dy;
   this.radius = Math.log2(5 + numberOfEvents * 15);
   this.color = color;
+  
+  
+  const subtract = Math.random() > 0.5;
+  const circleMidHeight = midHeight - this.radius;
+  const targetOffset = Math.random() * 20;
+  this.targetY = subtract ? circleMidHeight - targetOffset : circleMidHeight + targetOffset;
 
   this.draw = function() {
     brush.beginPath();
@@ -36,7 +45,18 @@ function Circle({
 
   this.update = function() {
     this.x += this.dx;
-    this.y += this.dy;
+
+    if (this.x > congregatePoint) {
+      if (this.y !== this.targetY && Math.abs(this.y - this.targetY) > 5) {
+        if (this.y > this.targetY) {
+          this.y = this.y - (this.x - congregatePoint) * 0.02;
+        } else {
+          this.y = this.y + (this.x - congregatePoint) * 0.02;
+        }
+      }
+    } else {
+      this.y += this.dy;
+    }
 
     this.draw();
   };
@@ -82,6 +102,9 @@ export default class Canvas extends Component {
     const canvas = this.canvasRef.current;
     const brush = canvas.getContext("2d");
 
+    const congregatePoint = canvas.width / 2;
+    const midHeight = canvas.height / 2;
+
     Object.entries(this.props.events).forEach(({ 1: value }, index) => {
       // Dynamically set circle vertical position based on canvas height and number of event types
 
@@ -95,7 +118,9 @@ export default class Canvas extends Component {
             brush,
             color: value.color,
             y: circleY,
-            numberOfEvents: value.increment
+            numberOfEvents: value.increment,
+            congregatePoint,
+            midHeight
           })
         );
       }
