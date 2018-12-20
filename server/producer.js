@@ -28,7 +28,7 @@ const eventTypes = [
   'AlbertIsAwesome2',
   'BenAndRick=TheBest2',
   'helloMG2',
-  'ChrisLovesKafka3',
+  'DanAbramov',
   'JoshMakeTea3',
   'AlbertIsAwesome3',
   'BenAndRick=TheBest3',
@@ -37,9 +37,9 @@ const eventTypes = [
   'JoshMakeTea4',
   'AlbertIsAwesome4',
   'BenAndRick=TheBest4',
-  'helloMG4',
+  'Urmo',
   'ChrisLovesKafka5',
-  'JoshMakeTea5',
+  'spock',
   'AlbertIsAwesome5',
   'BenAndRick=TheBest5',
   'helloMG5',
@@ -69,7 +69,7 @@ producer.on('ready', () => {
         }
       },
     );
-  }, 20);
+  }, 25);
 });
 
 producer.on('error', err => {
