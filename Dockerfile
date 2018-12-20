@@ -13,7 +13,7 @@ ENV HOME /usr/local/optimus
 WORKDIR /src/server
 RUN npm install
 
-WORKDIR /../app
+WORKDIR /src/app
 RUN npm install
 RUN npm run build
 
