@@ -34,7 +34,7 @@ class App extends Component {
   }
 
   componentWillMount() {
-    this.socket = openSocket("http://localhost:3001");
+    this.socket = openSocket(process.env.NODE_ENV === 'development' ? "http://localhost:3001" : window.location.origin);
 
     this.socket.on(
       "kafkaEvents",
