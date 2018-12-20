@@ -20,6 +20,16 @@ module.exports = ({ app, promisify, consumer, socketIO, envVariables }) => {
 
         const srcFolder = '../../app/build';
 
+        app.get('/private/liveness', (req, res) => {
+          res.header('Cache-Control', 'no-cache, no-store, must-revalidate');
+          res.status(200).send('pong');
+        });
+
+        app.get('/private/readiness', (req, res) => {
+          res.header('Cache-Control', 'no-cache, no-store, must-revalidate');
+          res.status(200).send('pong');
+        });
+
         app.use(
           '/',
           expressStaticGzip(path.join(__dirname, srcFolder), {
