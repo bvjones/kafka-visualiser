@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import openSocket from "socket.io-client";
-import get from "lodash.get";
 import Counter from "../Counter";
 import Visualiser from "../Visualiser";
 import styles from "./index.module.css";
@@ -16,18 +15,18 @@ class App extends Component {
 
     this.events = {};
 
-    this.incrementEventCount = this.incrementEventCount.bind(this);
+    this.incrementEventCounts = this.incrementEventCounts.bind(this);
   }
 
-  incrementEventCount(eventName) {
-    const event = get(this.events, `[${eventName}]`);
-
-    return (this.events = {
-      ...this.events,
-      [eventName]: {
-        count: event ? event.count + 1 : 1
+  incrementEventCounts(aggregatedEvents) {
+    Object.entries(aggregatedEvents).forEach(({0: name, 1: value}) => {
+      this.events = {
+        ...this.events,
+        [name]: {
+          count: this.events[name] ? this.events[name].count + value.count : value.count,
+        }
       }
-    });
+    })
   }
 
   updateEventsState() {
@@ -38,18 +37,12 @@ class App extends Component {
     this.socket = openSocket("http://localhost:3001");
 
     this.socket.on(
-      "kafkaEvent",
-      function(data) {
-        const event = JSON.parse(data.value);
-        const { eventName } = event.metadata;
-
-        this.incrementEventCount(eventName);
+      "kafkaEvents",
+      function(aggregatedEvents) {
+        this.incrementEventCounts(aggregatedEvents);
+        this.updateEventsState();
       }.bind(this)
     );
-
-    window.setInterval(() => {
-      this.updateEventsState();
-    }, 70);
   }
 
   render() {

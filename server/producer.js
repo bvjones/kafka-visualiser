@@ -23,10 +23,10 @@ const eventTypes = [
   'AlbertIsAwesome',
   'BenAndRick=TheBest',
   'helloMG',
-  'ChrisLovesKafka2',
-  'JoshMakeTea2',
-  'AlbertIsAwesome2',
-  'BenAndRick=TheBest2',
+  // 'ChrisLovesKafka2',
+  // 'JoshMakeTea2',
+  // 'AlbertIsAwesome2',
+  // 'BenAndRick=TheBest2',
   // 'helloMG2',
   // 'DanAbramov',
   // 'JoshMakeTea3',
@@ -69,7 +69,7 @@ producer.on('ready', () => {
         }
       },
     );
-  }, 100);
+  }, 5);
 });
 
 producer.on('error', err => {

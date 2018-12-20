@@ -35,9 +35,28 @@ module.exports = ({ app, promisify, consumer, socketIO, envVariables }) => {
           io = socketIO(server);
 
           io.on('connection', socket => {
+            let aggregatedEvents = {};
+
             consumerInstance.on('message', message => {
-              socket.emit('kafkaEvent', message);
+              const value = JSON.parse(message.value);
+              const { eventName } = value.metadata;
+
+              aggregatedEvents = {
+                ...aggregatedEvents,
+                [eventName]: {
+                  count: aggregatedEvents[eventName]
+                    ? aggregatedEvents[eventName].count + 1
+                    : 1,
+                },
+              };
             });
+
+            setInterval(() => {
+              if (Object.keys(aggregatedEvents).length > 0) {
+                socket.emit('kafkaEvents', aggregatedEvents);
+                aggregatedEvents = {};
+              }
+            }, 250);
           });
         });
       } catch (err) {
