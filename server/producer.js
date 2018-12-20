@@ -27,22 +27,22 @@ const eventTypes = [
   'JoshMakeTea2',
   'AlbertIsAwesome2',
   'BenAndRick=TheBest2',
-  'helloMG2',
-  'DanAbramov',
-  'JoshMakeTea3',
-  'AlbertIsAwesome3',
-  'BenAndRick=TheBest3',
-  'helloMG3',
-  'ChrisLovesKafka4',
-  'JoshMakeTea4',
-  'AlbertIsAwesome4',
-  'BenAndRick=TheBest4',
-  'Urmo',
-  'ChrisLovesKafka5',
-  'spock',
-  'AlbertIsAwesome5',
-  'BenAndRick=TheBest5',
-  'helloMG5',
+  // 'helloMG2',
+  // 'DanAbramov',
+  // 'JoshMakeTea3',
+  // 'AlbertIsAwesome3',
+  // 'BenAndRick=TheBest3',
+  // 'helloMG3',
+  // 'ChrisLovesKafka4',
+  // 'JoshMakeTea4',
+  // 'AlbertIsAwesome4',
+  // 'BenAndRick=TheBest4',
+  // 'Urmo',
+  // 'ChrisLovesKafka5',
+  // 'spock',
+  // 'AlbertIsAwesome5',
+  // 'BenAndRick=TheBest5',
+  // 'helloMG5',
 ];
 
 producer.on('ready', () => {
@@ -69,7 +69,7 @@ producer.on('ready', () => {
         }
       },
     );
-  }, 25);
+  }, 100);
 });
 
 producer.on('error', err => {
