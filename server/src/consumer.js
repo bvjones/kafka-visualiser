@@ -10,7 +10,9 @@ module.exports = ({ kafka, envVariables }) => {
       const client = new kafka.KafkaClient({
         kafkaHost: envVariables.KAFKA_HOST,
       });
-      consumer = new Consumer(client, [{ topic: envVariables.TOPIC_NAME }]);
+      consumer = new Consumer(client, [
+        { topic: envVariables.TOPIC_NAME, partition: 12 },
+      ]);
 
       consumer.client.on('ready', () => {
         console.log('Connected to Kafka');
