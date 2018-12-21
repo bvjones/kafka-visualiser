@@ -45,33 +45,33 @@ module.exports = ({ app, promisify, consumer, socketIO, envVariables }) => {
           io = socketIO(server);
 
           io.on('connection', socket => {
-            console.log('connection established');
-
-            let aggregatedEvents = {};
-
-            consumerInstance.on('message', message => {
-              const value = JSON.parse(message.value);
-              const { eventName } = value.metadata;
-
-              console.log('Recieved event: ', eventName);
-
-              aggregatedEvents = {
-                ...aggregatedEvents,
-                [eventName]: {
-                  count: aggregatedEvents[eventName]
-                    ? aggregatedEvents[eventName].count + 1
-                    : 1,
-                },
-              };
-            });
-
-            setInterval(() => {
-              if (Object.keys(aggregatedEvents).length > 0) {
-                socket.emit('kafkaEvents', aggregatedEvents);
-                aggregatedEvents = {};
-              }
-            }, 250);
+            console.log('Connection established ', socket.id);
           });
+
+          let aggregatedEvents = {};
+
+          consumerInstance.on('message', message => {
+            const value = JSON.parse(message.value);
+            const { eventName } = value.metadata;
+
+            console.log('Received event: ', eventName);
+
+            aggregatedEvents = {
+              ...aggregatedEvents,
+              [eventName]: {
+                count: aggregatedEvents[eventName]
+                  ? aggregatedEvents[eventName].count + 1
+                  : 1,
+              },
+            };
+          });
+
+          setInterval(() => {
+            if (Object.keys(aggregatedEvents).length > 0) {
+              io.emit('kafkaEvents', aggregatedEvents);
+              aggregatedEvents = {};
+            }
+          }, 250);
         });
       } catch (err) {
         console.error({ err }, 'Failed to start up');
