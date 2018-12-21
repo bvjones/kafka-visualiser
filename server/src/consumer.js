@@ -6,10 +6,16 @@ module.exports = ({ kafka, envVariables }) => {
   return {
     start: () => {
       console.log('Starting Kafka consumer');
+
       const client = new kafka.KafkaClient({
         kafkaHost: envVariables.KAFKA_HOST,
       });
-      consumer = new Consumer(client, [{ topic: process.env.TOPIC_NAME }]);
+      consumer = new Consumer(client, [{ topic: envVariables.TOPIC_NAME }]);
+
+      consumer.client.on('ready', () => {
+        console.log('Connected to Kafka');
+      });
+
       consumer.on('error', err => {
         console.error('Error with consumer', err);
       });

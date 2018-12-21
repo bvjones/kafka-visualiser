@@ -72,10 +72,6 @@ module.exports = ({ app, promisify, consumer, socketIO, envVariables }) => {
               aggregatedEvents = {};
             }
           }, 250);
-
-          consumerInstance.on('error', err => {
-            console.error(err, 'Consumer has encountered an error');
-          });
         });
       } catch (err) {
         console.error({ err }, 'Failed to start up');

@@ -17,5 +17,7 @@ RUN npm run build
 WORKDIR /src/server
 RUN npm install
 
+ENV DEBUG kafka-node:*
+
 EXPOSE 3000
 CMD ["node", "src/index.js"]
