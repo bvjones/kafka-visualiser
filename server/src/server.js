@@ -51,7 +51,14 @@ module.exports = ({ app, promisify, consumer, socketIO, envVariables }) => {
           let aggregatedEvents = {};
 
           consumerInstance.on('message', message => {
-            const value = JSON.parse(message.value);
+            let value;
+
+            try {
+              value = JSON.parse(message.value);
+            } catch (err) {
+              console.error('Error when parsing event', err);
+              return;
+            }
             const { eventName } = value.metadata;
 
             console.log('Received event: ', eventName);
