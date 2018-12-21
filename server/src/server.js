@@ -45,11 +45,15 @@ module.exports = ({ app, promisify, consumer, socketIO, envVariables }) => {
           io = socketIO(server);
 
           io.on('connection', socket => {
+            console.log('connection established');
+
             let aggregatedEvents = {};
 
             consumerInstance.on('message', message => {
               const value = JSON.parse(message.value);
               const { eventName } = value.metadata;
+
+              console.log('Recieved event: ', eventName);
 
               aggregatedEvents = {
                 ...aggregatedEvents,
