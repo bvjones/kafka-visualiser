@@ -1,7 +1,3 @@
-.optionsContainer {
-  /* background-color: white; */
-}
-
 .toggleOptions {
   border: none;
   background-color: transparent;
@@ -20,4 +16,9 @@
 
 .rotateButton {
   transform: rotate(360deg);
+}
+
+.optionsMenu {
+  position: absolute;
+  
 }

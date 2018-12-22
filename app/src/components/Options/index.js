@@ -22,14 +22,14 @@ export default class Options extends Component {
     const {optionsOpen} = this.state;
 
     return (
-      <div className={styles.optionsContainer}>
+      <div>
         <button
           className={`${styles.toggleOptions} ${optionsOpen ? styles.rotateButton : null}`}
           onClick={this.toggleOptionsMenu}
         >
           <CogIcon />
         </button>
-        {optionsOpen && <div>Options</div>}
+        {optionsOpen && <div className={styles.optionsMenu}>Options</div>}
       </div>
     );
   }
