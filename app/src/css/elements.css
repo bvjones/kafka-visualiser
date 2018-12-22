@@ -9,6 +9,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background-color: var(--off-black);
   color: var(--white);
+  overflow: hidden;
 }
 
 h1 {
