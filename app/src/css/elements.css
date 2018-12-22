@@ -7,7 +7,7 @@ body {
   font-family: var(--roboto);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background-color: var(--dark-gunmetal);
+  background-color: var(--off-black);
   color: var(--white);
 }
 
