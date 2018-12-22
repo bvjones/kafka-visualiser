@@ -61,8 +61,6 @@ module.exports = ({ app, promisify, consumer, socketIO, envVariables }) => {
             }
             const { eventName } = value.metadata;
 
-            console.log('Received event: ', eventName);
-
             aggregatedEvents = {
               ...aggregatedEvents,
               [eventName]: {

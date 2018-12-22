@@ -1,0 +1,10 @@
+@import "../../css/colors.css";
+
+.cogIcon {
+  width: 30px;
+  height: 30px;
+}
+
+.cogIcon g path {
+  fill: var(--white);
+}

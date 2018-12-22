@@ -1,0 +1,23 @@
+.optionsContainer {
+  /* background-color: white; */
+}
+
+.toggleOptions {
+  border: none;
+  background-color: transparent;
+  cursor: pointer;
+  position: absolute;
+  right: 10px;
+  top: 15px;
+  transition: transform 1s ease-out;
+  padding: 0;
+  display: flex;
+}
+
+.toggleOptions:focus {
+  outline: none;
+}
+
+.rotateButton {
+  transform: rotate(360deg);
+}

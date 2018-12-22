@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import openSocket from "socket.io-client";
 import Counter from "../Counter";
 import Visualiser from "../Visualiser";
+import Options from "../Options";
 import styles from "./index.module.css";
 
 class App extends Component {
@@ -19,14 +20,16 @@ class App extends Component {
   }
 
   incrementEventCounts(aggregatedEvents) {
-    Object.entries(aggregatedEvents).forEach(({0: name, 1: value}) => {
+    Object.entries(aggregatedEvents).forEach(({ 0: name, 1: value }) => {
       this.events = {
         ...this.events,
         [name]: {
-          count: this.events[name] ? this.events[name].count + value.count : value.count,
+          count: this.events[name]
+            ? this.events[name].count + value.count
+            : value.count
         }
-      }
-    })
+      };
+    });
   }
 
   updateEventsState() {
@@ -34,7 +37,11 @@ class App extends Component {
   }
 
   componentWillMount() {
-    this.socket = openSocket(process.env.NODE_ENV === 'development' ? "http://localhost:3001" : window.location.origin);
+    this.socket = openSocket(
+      process.env.NODE_ENV === "development"
+        ? "http://localhost:3001"
+        : window.location.origin
+    );
 
     this.socket.on(
       "kafkaEvents",
@@ -57,6 +64,7 @@ class App extends Component {
         <h1 className={styles.title}>kafka Visualiser</h1>
         <Visualiser events={this.state.events} />
         <div className={styles.countersContainer}>{counters}</div>
+        <Options />
       </div>
     );
   }
