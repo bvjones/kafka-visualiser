@@ -29,7 +29,7 @@ export default class Options extends Component {
         >
           <CogIcon />
         </button>
-        {optionsOpen && <div className={styles.optionsMenu}>Options</div>}
+        <div className={`${styles.optionsMenu} ${optionsOpen ? styles.menuUp : null}`}>Options</div>
       </div>
     );
   }
