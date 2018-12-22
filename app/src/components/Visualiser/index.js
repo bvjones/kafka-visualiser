@@ -14,17 +14,22 @@ export default class Visualiser extends Component {
   }
 
   static getDerivedStateFromProps(props, state) {
-    let newState = { ...state };
+    let updatedEvents = {};
 
-    Object.entries(props.events).forEach(({ 0: name, 1: value }) => {
-      newState.events[name] = {
+    const whitelistedEvents = Object.entries(props.events).filter(({1: value}) => {
+      return value.whitelisted;
+    })
+
+    whitelistedEvents.forEach(({ 0: name, 1: value }) => {
+      updatedEvents[name] = {
+        ...value,
         count: value.count,
         increment: value.count - get(state, `events[${name}].count`) || 0,
         color: get(state, `events[${name}].color`) || colorHash.hex(name)
       };
     });
 
-    return { events: newState.events };
+    return { events: updatedEvents };
   }
 
   render() {
