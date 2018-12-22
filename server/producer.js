@@ -21,7 +21,7 @@ const eventTypes = [
   'ChrisLovesKafka',
   'JoshMakeTea',
   'AlbertIsAwesome',
-  // 'BenAndRick=TheBest',
+  'BenAndRick=TheBest',
   // 'helloMG',
   // 'ChrisLovesKafka2',
   // 'JoshMakeTea2',
