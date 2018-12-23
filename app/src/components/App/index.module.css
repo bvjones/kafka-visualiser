@@ -1,5 +1,5 @@
 .countersContainer {
-  width: 80%;
+  width: 100%;
   padding: 30px 10%;
   display: flex;
   flex-wrap: wrap;
@@ -9,7 +9,6 @@
 .title {
   font-size: 30px;
   font-weight: bold;
-  margin-left: 20px;
-  margin-top: 15px;
+  margin: 15px 20px;
   text-align: center;
 }

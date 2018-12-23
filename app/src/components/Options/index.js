@@ -40,7 +40,10 @@ export default class Options extends Component {
             optionsOpen ? styles.menuUp : null
           }`}
         >
-          <WhiteList events={this.props.events} updateEventWhitelist={this.props.updateEventWhitelist} />
+          <WhiteList
+            events={this.props.events}
+            updateEventWhitelist={this.props.updateEventWhitelist}
+          />
         </div>
       </div>
     );
@@ -49,5 +52,5 @@ export default class Options extends Component {
 
 Options.propTypes = {
   events: PropTypes.shape({}).isRequired,
-  updateEventWhitelist: PropTypes.func.isRequired,
+  updateEventWhitelist: PropTypes.func.isRequired
 };
