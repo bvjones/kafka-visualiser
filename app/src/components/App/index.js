@@ -72,15 +72,15 @@ class App extends Component {
   render() {
     const { events } = this.state;
 
-    const counters = Object.entries(events).map(({ 0: name, 1: value }) => {
-      return <Counter key={name} name={name} count={value.count} />;
-    });
+    // const counters = Object.entries(events).map(({ 0: name, 1: value }) => {
+    //   return <Counter key={name} name={name} count={value.count} />;
+    // });
 
     return (
       <div>
         <h1 className={styles.title}>kafka Visualiser</h1>
         <Visualiser events={events} />
-        <div className={styles.countersContainer}>{counters}</div>
+        {/* <div className={styles.countersContainer}>{counters}</div> */}
         <Options
           events={events}
           updateEventWhitelist={this.updateEventWhitelist}

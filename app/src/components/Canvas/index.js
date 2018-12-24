@@ -1,6 +1,6 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import styles from "./index.module.css";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import styles from './index.module.css';
 
 function Circle({
   brush,
@@ -73,7 +73,7 @@ export default class Canvas extends Component {
 
   updateAnimationState() {
     const canvas = this.canvasRef.current;
-    const brush = canvas.getContext("2d");
+    const brush = canvas.getContext('2d');
 
     brush.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -100,7 +100,7 @@ export default class Canvas extends Component {
 
   componentDidUpdate() {
     const canvas = this.canvasRef.current;
-    const brush = canvas.getContext("2d");
+    const brush = canvas.getContext('2d');
 
     const congregatePoint = canvas.width * 0.6;
     const midHeight = canvas.height / 2;
@@ -128,27 +128,17 @@ export default class Canvas extends Component {
   }
 
   render() {
-    const canvasWidth = window.innerWidth * 0.8;
-    const canvasHeight = window.innerHeight * 0.7;
+    const canvasWidth = window.innerWidth * 0.7;
+    const canvasHeight = window.innerHeight - 60;
 
     return (
       <div className={styles.canvasContainer}>
-        <div className={styles.eventNames}>
-          {Object.keys(this.props.events).map(eventType => {
-            return (
-              <h3 className={styles.eventName} key={eventType}>
-                {eventType}
-              </h3>
-            );
-          })}
-        </div>
-        <div className={styles.canvas}>
-          <canvas
-            width={canvasWidth}
-            height={canvasHeight}
-            ref={this.canvasRef}
-          />
-        </div>
+        <canvas
+        className={styles.canvas}
+          width={canvasWidth}
+          height={canvasHeight}
+          ref={this.canvasRef}
+        />
       </div>
     );
   }

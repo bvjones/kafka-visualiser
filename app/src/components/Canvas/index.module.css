@@ -1,27 +1,10 @@
 @import "../../css/colors.css";
 
 .canvasContainer {
-  width: 100%;
-  display: flex;
-  justify-content: center;
-}
-
-.eventNames {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  margin-right: 15px;
-}
-
-.eventName {
-  margin: 0;
-}
-
-.canvas {
   position: relative;
 }
 
-.canvas::after {
+.canvasContainer::after {
   content: "";
   position: absolute;
   top: 0;
