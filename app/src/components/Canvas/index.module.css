@@ -2,6 +2,7 @@
 
 .canvasContainer {
   position: relative;
+  display: flex;
 }
 
 .canvasContainer::after {

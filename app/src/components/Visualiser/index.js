@@ -28,10 +28,12 @@ const maxTrendValues =
 
 const startTime = Date.now();
 
+const maxTrendHistoryMins = EVENT_COUNT_TREND_MAX_HISTORY / 60000;
+
 export default class Visualiser extends Component {
   constructor(props) {
     super(props);
-    this.state = { events: {}, eventTrends: {}};
+    this.state = { events: {}, eventTrends: {} };
 
     this.calculateTrends = this.calculateTrends.bind(this);
 
@@ -92,21 +94,38 @@ export default class Visualiser extends Component {
   }
 
   render() {
+    const visualiserHeight = window.innerHeight - 60;
+    const numberOfEvents = Object.keys(this.state.events).length;
+
     return (
       <div className={styles.visualiserContainer}>
         <div className={styles.eventSummaries}>
-          {Object.entries(this.state.events).map(({ 0: name, 1: value }) => {
+          <span className={styles.chartLegend}>
+            last {maxTrendHistoryMins} mins
+          </span>
+          {Object.entries(this.state.events).map(
+            ({ 0: name, 1: value }, index) => {
+              const topPosition =
+                (visualiserHeight / (numberOfEvents + 1)) * (index + 1);
 
-            return (
-              <EventSummary
-                key={name}
-                name={name}
-                color={value.color}
-                count={value.count}
-                trendValues={get(this.state.eventTrends, `[${name}].trendValues`) || []}
-              />
-            );
-          })}
+              return (
+                <div
+                  key={name}
+                  className={styles.summary}
+                  style={{ top: `${topPosition - 29}px` }}
+                >
+                  <EventSummary
+                    name={name}
+                    color={value.color}
+                    count={value.count}
+                    trendValues={
+                      get(this.state.eventTrends, `[${name}].trendValues`) || []
+                    }
+                  />
+                </div>
+              );
+            }
+          )}
         </div>
         <Canvas events={this.state.events} />
       </div>
