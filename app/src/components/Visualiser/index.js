@@ -3,6 +3,10 @@ import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import orderBy from 'lodash.orderby';
 import styles from './index.module.css';
+import {
+  EVENT_COUNT_TREND_INTERVAL_MS,
+  EVENT_COUNT_TREND_MAX_HISTORY
+} from '../../constants';
 
 import Canvas from '../Canvas';
 import EventSummary from '../EventSummary';
@@ -19,10 +23,46 @@ const getNextColor = () => {
   return colors.pop();
 };
 
+const maxTrendValues =
+  EVENT_COUNT_TREND_MAX_HISTORY / EVENT_COUNT_TREND_INTERVAL_MS;
+
 export default class Visualiser extends Component {
   constructor(props) {
     super(props);
-    this.state = { events: {} };
+    this.state = { events: {}, eventTrends: {} };
+
+    this.calculateTrends = this.calculateTrends.bind(this);
+
+    window.setInterval(() => {
+      this.calculateTrends();
+    }, EVENT_COUNT_TREND_INTERVAL_MS);
+  }
+
+  calculateTrends() {
+    const { eventTrends } = this.state;
+    const newEventTrends = {};
+
+    Object.entries(this.state.events).forEach(({ 0: name, 1: value }) => {
+      const previousCount = get(eventTrends, `[${name}].lastCount`) || 0;
+      const increment = value.count - previousCount;
+      const incrementPerSecond =
+        increment / (EVENT_COUNT_TREND_INTERVAL_MS / 1000);
+
+      let trendValues = [...(get(eventTrends, `[${name}].trendValues`) || [])];
+
+      trendValues.push({ x: Date.now(), y: incrementPerSecond });
+
+      if (trendValues.length > maxTrendValues) {
+        trendValues.shift();
+      }
+
+      newEventTrends[name] = {
+        trendValues,
+        lastCount: value.count
+      };
+    });
+
+    this.setState({ eventTrends: newEventTrends });
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -46,16 +86,21 @@ export default class Visualiser extends Component {
       };
     });
 
-    return { events: updatedEvents };
+    return { ...state, events: updatedEvents };
   }
 
   render() {
     return (
       <div className={styles.visualiserContainer}>
         <div className={styles.eventSummaries}>
-          {Object.entries(this.state.events).map(({0: name, 1: value}) => {
+          {Object.entries(this.state.events).map(({ 0: name, 1: value }) => {
             return (
-             <EventSummary name={name} color={value.color} count={value.count} />
+              <EventSummary
+                key={name}
+                name={name}
+                color={value.color}
+                count={value.count}
+              />
             );
           })}
         </div>
