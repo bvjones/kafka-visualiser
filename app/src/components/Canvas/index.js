@@ -6,18 +6,18 @@ function Circle({
   brush,
   color,
   x = 0,
-  y = 150,
+  y,
   dx = 5,
   dy = 0,
   numberOfEvents,
   congregatePoint,
   midHeight
 }) {
-  this.x = x;
-  this.y = y;
   this.dx = dx;
   this.dy = dy;
   this.radius = Math.log2(5 + numberOfEvents * 15);
+  this.x = x;
+  this.y = y;
   this.color = color;
 
   const subtract = Math.random() > 0.5;
@@ -105,26 +105,27 @@ export default class Canvas extends Component {
     const congregatePoint = canvas.width * 0.6;
     const midHeight = canvas.height / 2;
 
-    Object.entries(this.props.events).forEach(({ 1: value }, index) => {
-      // Dynamically set circle vertical position based on canvas height and number of event types
+    Object.entries(this.props.events).forEach(
+      ({ 1: value }, index) => {
+        // Dynamically set circle vertical position based on canvas height and number of event types
+        if (value.increment > 0) {
+          const circleY =
+            (canvas.height / (Object.keys(this.props.events).length + 1)) *
+            (index + 1);
 
-      if (value.increment > 0) {
-        const circleY =
-          (canvas.height / (Object.keys(this.props.events).length + 1)) *
-          (index + 1);
-
-        this.circles.push(
-          new Circle({
-            brush,
-            color: value.color,
-            y: circleY,
-            numberOfEvents: value.increment,
-            congregatePoint,
-            midHeight
-          })
-        );
+          this.circles.push(
+            new Circle({
+              brush,
+              color: value.color,
+              y: circleY,
+              numberOfEvents: value.increment,
+              congregatePoint,
+              midHeight
+            })
+          );
+        }
       }
-    });
+    );
   }
 
   render() {
@@ -134,7 +135,7 @@ export default class Canvas extends Component {
     return (
       <div className={styles.canvasContainer}>
         <canvas
-        className={styles.canvas}
+          className={styles.canvas}
           width={canvasWidth}
           height={canvasHeight}
           ref={this.canvasRef}
