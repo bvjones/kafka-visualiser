@@ -1,0 +1,15 @@
+@import "../../css//font-families.css";
+
+.chartContainer {
+  margin: 0 10px;
+  position: relative;
+  padding-top: 10px;
+}
+
+.chartYLabel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  font-family: var(--roboto);
+  font-size: 9px;
+}

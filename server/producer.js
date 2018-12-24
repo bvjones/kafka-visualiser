@@ -22,7 +22,7 @@ const eventTypes = [
   'JoshMakeTea',
   'AlbertIsAwesome',
   'BenAndRick=TheBest',
-  'helloMG',
+  // 'helloMG',
   // 'ChrisLovesKafka2',
   // 'JoshMakeTea2',
   // 'AlbertIsAwesome2',
@@ -139,7 +139,7 @@ producer.on('ready', () => {
         }
       },
     );
-  }, 100);
+  }, 20);
 });
 
 producer.on('error', err => {
