@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import numeral from 'numeral';
 import {
   EVENT_COUNT_TREND_MAX_HISTORY,
   EVENT_COUNT_TREND_INTERVAL_MS
 } from '../../constants';
-import PropTypes from 'prop-types';
+import styles from './index.module.css';
 
 const maxEventPoints =
   EVENT_COUNT_TREND_MAX_HISTORY / EVENT_COUNT_TREND_INTERVAL_MS;
@@ -49,11 +51,6 @@ export default class TrendChart extends Component {
     brush.strokeStyle = this.props.color;
     brush.stroke();
 
-    const pointSpacing = (canvas.width - 1) / maxEventPoints;
-
-    const maxHeight = canvas.height * 0.9;
-    const heightOffSet = canvas.height - maxHeight;
-
     const maxY = trendValues.reduce((maxY, trendValue) => {
       if (trendValue.y > maxY) {
         return trendValue.y;
@@ -61,7 +58,12 @@ export default class TrendChart extends Component {
       return maxY;
     }, 0);
 
-    console.log('*****NEW DRAW*****');
+    this.maxY = maxY;
+
+    const pointSpacing = (canvas.width - 1) / maxEventPoints;
+
+    const maxHeight = canvas.height * 0.9;
+    const heightOffSet = canvas.height - maxHeight;
 
     if (trendValues.length > 0) {
       let pointX = 2;
@@ -84,7 +86,20 @@ export default class TrendChart extends Component {
   }
 
   render() {
-    return <canvas width={120} height={60} ref={this.canvasRef} />;
+    const displayMaxY =
+      this.maxY < 1000 ? this.maxY : numeral(this.maxY).format('0.0a');
+
+    return (
+      <div className={styles.chartContainer}>
+        <span
+          className={styles.chartYLabel}
+          style={{ color: this.props.color }}
+        >
+          {this.props.trendValues.length > 1 && displayMaxY}
+        </span>
+        <canvas width={120} height={45} ref={this.canvasRef} />
+      </div>
+    );
   }
 }
 
