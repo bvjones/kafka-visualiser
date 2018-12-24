@@ -1,0 +1,23 @@
+@import "../../css//font-families.css";
+
+.eventSummaryContainer {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.count {
+  font-size: 30px;
+  font-family: var(--major-mono);
+  font-weight: bold;
+  margin-right: 20px;
+  width: 65px;
+  text-align: center;
+}
+
+.name {
+  width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

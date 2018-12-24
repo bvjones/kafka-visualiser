@@ -1,11 +1,23 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import get from "lodash.get";
-import ColorHash from "color-hash";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import get from 'lodash.get';
+import orderBy from 'lodash.orderby';
+import styles from './index.module.css';
 
-import Canvas from "../Canvas";
+import Canvas from '../Canvas';
+import EventSummary from '../EventSummary';
 
-const colorHash = new ColorHash();
+const colorPalette = ['#13a8fe', '#ff00ff', '#ffa300', '#cf0060'];
+
+let colors = [];
+
+const getNextColor = () => {
+  if (colors.length === 0) {
+    colors = [...colorPalette];
+  }
+
+  return colors.pop();
+};
 
 export default class Visualiser extends Component {
   constructor(props) {
@@ -16,16 +28,21 @@ export default class Visualiser extends Component {
   static getDerivedStateFromProps(props, state) {
     let updatedEvents = {};
 
-    const whitelistedEvents = Object.entries(props.events).filter(({1: value}) => {
-      return value.whitelisted;
-    })
+    let whitelistedEvents = Object.entries(props.events).filter(
+      ({ 1: value }) => {
+        return value.whitelisted;
+      }
+    );
+
+    // Sort events by name in alphabetical asc order
+    whitelistedEvents = orderBy(whitelistedEvents, ['0']);
 
     whitelistedEvents.forEach(({ 0: name, 1: value }) => {
       updatedEvents[name] = {
         ...value,
         count: value.count,
         increment: value.count - get(state, `events[${name}].count`) || 0,
-        color: get(state, `events[${name}].color`) || colorHash.hex(name)
+        color: get(state, `events[${name}].color`) || getNextColor()
       };
     });
 
@@ -33,7 +50,18 @@ export default class Visualiser extends Component {
   }
 
   render() {
-    return <Canvas events={this.state.events} />;
+    return (
+      <div className={styles.visualiserContainer}>
+        <div className={styles.eventSummaries}>
+          {Object.entries(this.state.events).map(({0: name, 1: value}) => {
+            return (
+             <EventSummary name={name} color={value.color} count={value.count} />
+            );
+          })}
+        </div>
+        <Canvas events={this.state.events} />
+      </div>
+    );
   }
 }
 
