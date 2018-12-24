@@ -21,3 +21,7 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.chartContainer {
+  margin: 0 10px;
+}

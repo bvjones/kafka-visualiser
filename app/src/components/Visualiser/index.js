@@ -26,10 +26,12 @@ const getNextColor = () => {
 const maxTrendValues =
   EVENT_COUNT_TREND_MAX_HISTORY / EVENT_COUNT_TREND_INTERVAL_MS;
 
+const startTime = Date.now();
+
 export default class Visualiser extends Component {
   constructor(props) {
     super(props);
-    this.state = { events: {}, eventTrends: {} };
+    this.state = { events: {}, eventTrends: {}};
 
     this.calculateTrends = this.calculateTrends.bind(this);
 
@@ -50,7 +52,7 @@ export default class Visualiser extends Component {
 
       let trendValues = [...(get(eventTrends, `[${name}].trendValues`) || [])];
 
-      trendValues.push({ x: Date.now(), y: incrementPerSecond });
+      trendValues.push({ x: Date.now() - startTime, y: incrementPerSecond });
 
       if (trendValues.length > maxTrendValues) {
         trendValues.shift();
@@ -94,12 +96,14 @@ export default class Visualiser extends Component {
       <div className={styles.visualiserContainer}>
         <div className={styles.eventSummaries}>
           {Object.entries(this.state.events).map(({ 0: name, 1: value }) => {
+
             return (
               <EventSummary
                 key={name}
                 name={name}
                 color={value.color}
                 count={value.count}
+                trendValues={get(this.state.eventTrends, `[${name}].trendValues`) || []}
               />
             );
           })}
