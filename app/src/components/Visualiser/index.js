@@ -23,32 +23,36 @@ const startTime = Date.now();
 export default class Visualiser extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      events: {},
-      eventTrends: {},
-      totalEventsPerSecond: 0,
-      totalCount: 0
-    };
     this.props = props;
-
     const {
       eventCountTrendIntervalMs,
       eventCountTrendMaxHistoryMs
     } = this.props.options;
 
-    this.maxTrendValues = eventCountTrendMaxHistoryMs / eventCountTrendIntervalMs;
+    const maxTrendValues =
+      eventCountTrendMaxHistoryMs / eventCountTrendIntervalMs;
 
-    this.maxTrendHistoryMins = eventCountTrendMaxHistoryMs / 60000;
+    const maxTrendHistoryMins = eventCountTrendMaxHistoryMs / 60000;
 
     this.calculateTrends = this.calculateTrends.bind(this);
 
-    window.setInterval(() => {
+    this.calculationInterval = window.setInterval(() => {
       this.calculateTrends();
     }, eventCountTrendIntervalMs);
+
+    this.state = {
+      events: {},
+      eventTrends: {},
+      totalEventsPerSecond: 0,
+      totalCount: 0,
+      maxTrendValues,
+      maxTrendHistoryMins,
+      eventCountTrendIntervalMs
+    };
   }
 
   calculateTrends() {
-    const { eventTrends, totalCount } = this.state;
+    const { eventTrends, totalCount, maxTrendValues } = this.state;
     const newEventTrends = {};
     let totalIncrement = 0;
     let newTotalCount = totalCount;
@@ -65,7 +69,7 @@ export default class Visualiser extends Component {
 
       trendValues.push({ x: Date.now() - startTime, y: incrementPerSecond });
 
-      if (trendValues.length > this.maxTrendValues) {
+      if (trendValues.length > maxTrendValues) {
         trendValues.shift();
       }
 
@@ -106,7 +110,40 @@ export default class Visualiser extends Component {
       };
     });
 
-    return { ...state, events: updatedEvents };
+    const {
+      eventCountTrendIntervalMs,
+      eventCountTrendMaxHistoryMs
+    } = props.options;
+
+    const maxTrendValues =
+      eventCountTrendMaxHistoryMs / eventCountTrendIntervalMs;
+
+    const maxTrendHistoryMins = eventCountTrendMaxHistoryMs / 60000;
+
+    return {
+      ...state,
+      events: updatedEvents,
+      maxTrendHistoryMins,
+      maxTrendValues
+    };
+  }
+
+  componentDidUpdate(prevProps) {
+    // If event trend interval has been updated
+    if (
+      prevProps.options.eventCountTrendIntervalMs !==
+      this.props.options.eventCountTrendIntervalMs
+    ) {
+      console.log('INTERNAVL UPDATED');
+      console.log('OLD', prevProps.options.eventCountTrendIntervalMs);
+      console.log('NEW', this.props.options.eventCountTrendIntervalMs);
+
+      window.clearInterval(this.calculationInterval);
+
+      this.calculationInterval = window.setInterval(() => {
+        this.calculateTrends();
+      }, this.props.options.eventCountTrendIntervalMs);
+    }
   }
 
   render() {
@@ -119,7 +156,7 @@ export default class Visualiser extends Component {
         <div className={styles.eventSummaries}>
           {showTrends && (
             <span className={styles.chartLegend}>
-              last {this.maxTrendHistoryMins} mins
+              last {this.state.maxTrendHistoryMins} mins
             </span>
           )}
           {Object.entries(this.state.events).map(
