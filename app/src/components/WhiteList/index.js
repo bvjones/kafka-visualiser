@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import CheckMark from '../CheckMark';
+import CheckBox from '../CheckBox';
 import styles from './index.module.css';
 
 export default function WhiteList({ events, updateEventWhitelist }) {
@@ -8,24 +8,11 @@ export default function WhiteList({ events, updateEventWhitelist }) {
     const { whitelisted } = value;
 
     return (
-      <div key={name} className={styles.checkboxContainer}>
-        <input
-          className={styles.input}
-          type="checkbox"
-          name={name}
-          id={name}
-          checked={whitelisted}
-          onChange={updateEventWhitelist}
-        />
-        <label
-          htmlFor={name}
-          className={styles.checkboxLabel}
-          checked={whitelisted}
-        >
-          <div className={styles.checkbox}>{whitelisted && <CheckMark />}</div>
-          {name}
-        </label>
-      </div>
+      <CheckBox
+        checked={whitelisted}
+        onChange={updateEventWhitelist}
+        name={name}
+      />
     );
   });
 

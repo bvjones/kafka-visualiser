@@ -4,7 +4,7 @@ import CogIcon from '../CogIcon';
 import WhiteList from '../WhiteList';
 import styles from './index.module.css';
 
-export default class Options extends Component {
+export default class OptionsMenu extends Component {
   constructor(props) {
     super(props);
 
@@ -50,7 +50,7 @@ export default class Options extends Component {
   }
 }
 
-Options.propTypes = {
+OptionsMenu.propTypes = {
   events: PropTypes.shape({}).isRequired,
   updateEventWhitelist: PropTypes.func.isRequired
 };

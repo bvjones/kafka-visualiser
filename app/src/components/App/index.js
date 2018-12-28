@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import openSocket from 'socket.io-client';
 import Visualiser from '../Visualiser';
-import Options from '../Options';
+import OptionsMenu from '../OptionsMenu';
 import styles from './index.module.css';
 
 class App extends Component {
@@ -10,13 +10,18 @@ class App extends Component {
     this.socket = null;
 
     this.state = {
-      events: {}
+      events: {},
+      options: {
+        showTrends: true
+      }
     };
 
     this.events = {};
 
     this.incrementEventCounts = this.incrementEventCounts.bind(this);
     this.updateEventWhitelist = this.updateEventWhitelist.bind(this);
+    this.updateOptions = this.updateOptions.bind(this);
+    this.updateEventsState = this.updateEventsState.bind(this);
   }
 
   incrementEventCounts(aggregatedEvents) {
@@ -52,6 +57,10 @@ class App extends Component {
     this.setState({ events: this.events });
   }
 
+  updateOptions(options) {
+    this.setState({ options: { ...this.state.options, options } });
+  }
+
   componentWillMount() {
     this.socket = openSocket(
       process.env.NODE_ENV === 'development'
@@ -75,7 +84,7 @@ class App extends Component {
       <div>
         <h1 className={styles.title}>kafka Visualiser</h1>
         <Visualiser events={events} />
-        <Options
+        <OptionsMenu
           events={events}
           updateEventWhitelist={this.updateEventWhitelist}
           updateEventsState={this.updateEventsState}
