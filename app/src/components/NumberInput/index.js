@@ -22,7 +22,7 @@ export default function NumberInput({ name, onChange, displayName, value }) {
 }
 
 NumberInput.propTypes = {
-  value: PropTypes.bool.isRequired,
+  value: PropTypes.number.isRequired,
   onChange: PropTypes.func.isRequired,
   name: PropTypes.string.isRequired,
   displayName: PropTypes.string.isRequired

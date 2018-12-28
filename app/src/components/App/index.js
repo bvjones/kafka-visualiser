@@ -100,7 +100,7 @@ class App extends Component {
     this.setState({
       options: {
         ...this.state.options,
-        [name]: value,
+        [name]: parseInt(value, 10),
       }
     });
   }
