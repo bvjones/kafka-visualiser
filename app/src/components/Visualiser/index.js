@@ -116,7 +116,8 @@ export default class Visualiser extends Component {
                 <div
                   key={name}
                   className={styles.summary}
-                  style={{ top: `${topPosition - 29}px` }}
+                  // Vertically center the event summary dependent on its height
+                  style={{ top: `${topPosition - (showTrends ? 29 : 10)}px` }}
                 >
                   <EventSummary
                     name={name}
