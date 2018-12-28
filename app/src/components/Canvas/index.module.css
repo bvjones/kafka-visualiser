@@ -14,3 +14,18 @@
   height: 100%;
   background: linear-gradient(to right, var(--off-black) 0%, transparent 10%, transparent 85%, var(--off-black) 100%);
 }
+
+.counter {
+  position: absolute;
+  top: calc(50% - 30.5px);
+  right: 30px;
+  z-index: 10;
+  color: var(--white);
+  text-align: center;
+}
+
+.totalCount {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 40px;
+}

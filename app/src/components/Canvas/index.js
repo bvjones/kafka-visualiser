@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import formatDisplayNumber from '../../utils/formatDisplayNumber';
 import styles from './index.module.css';
 
 function Circle({
@@ -7,7 +8,7 @@ function Circle({
   color,
   x = 0,
   y,
-  dx = 5,
+  dx = 7,
   dy = 0,
   numberOfEvents,
   congregatePoint,
@@ -65,9 +66,9 @@ function Circle({
 export default class Canvas extends Component {
   constructor(props) {
     super(props);
+    this.props = props;
     this.canvasRef = React.createRef();
     this.circles = [];
-
     this.updateAnimationState = this.updateAnimationState.bind(this);
   }
 
@@ -102,38 +103,41 @@ export default class Canvas extends Component {
     const canvas = this.canvasRef.current;
     const brush = canvas.getContext('2d');
 
-    const congregatePoint = canvas.width * 0.6;
+    const congregatePoint = canvas.width * 0.5;
     const midHeight = canvas.height / 2;
 
-    Object.entries(this.props.events).forEach(
-      ({ 1: value }, index) => {
-        // Dynamically set circle vertical position based on canvas height and number of event types
-        if (value.increment > 0) {
-          const circleY =
-            (canvas.height / (Object.keys(this.props.events).length + 1)) *
-            (index + 1);
+    Object.entries(this.props.events).forEach(({ 1: value }, index) => {
+      // Dynamically set circle vertical position based on canvas height and number of event types
+      if (value.increment > 0) {
+        const circleY =
+          (canvas.height / (Object.keys(this.props.events).length + 1)) *
+          (index + 1);
 
-          this.circles.push(
-            new Circle({
-              brush,
-              color: value.color,
-              y: circleY,
-              numberOfEvents: value.increment,
-              congregatePoint,
-              midHeight
-            })
-          );
-        }
+        this.circles.push(
+          new Circle({
+            brush,
+            color: value.color,
+            y: circleY,
+            numberOfEvents: value.increment,
+            congregatePoint,
+            midHeight
+          })
+        );
       }
-    );
+    });
   }
 
   render() {
     const canvasWidth = window.innerWidth * 0.75;
     const canvasHeight = window.innerHeight - 60;
+    const { totalCount, totalEventsPerSecond } = this.props;
 
     return (
       <div className={styles.canvasContainer}>
+        <div className={styles.counter}>
+          <span className={styles.totalCount}>{formatDisplayNumber(totalCount)}</span>
+          <span>{formatDisplayNumber(totalEventsPerSecond)}/s</span>
+        </div>
         <canvas
           className={styles.canvas}
           width={canvasWidth}
@@ -146,5 +150,7 @@ export default class Canvas extends Component {
 }
 
 Canvas.propTypes = {
-  events: PropTypes.shape({}).isRequired
+  events: PropTypes.shape({}).isRequired,
+  totalCount: PropTypes.number.isRequired,
+  totalEventsPerSecond: PropTypes.number.isRequired
 };

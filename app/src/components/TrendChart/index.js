@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import numeral from 'numeral';
+import formatDisplayNumber from '../../utils/formatDisplayNumber';
 import {
   EVENT_COUNT_TREND_MAX_HISTORY,
   EVENT_COUNT_TREND_INTERVAL_MS
@@ -86,8 +86,7 @@ export default class TrendChart extends Component {
   }
 
   render() {
-    const displayMaxY =
-      this.maxY < 1000 ? this.maxY : numeral(this.maxY).format('0.0a');
+    const displayMaxY = formatDisplayNumber(this.maxY);
 
     return (
       <div className={styles.chartContainer}>
