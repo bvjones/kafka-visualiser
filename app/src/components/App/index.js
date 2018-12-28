@@ -91,7 +91,7 @@ class App extends Component {
     return (
       <div>
         <h1 className={styles.title}>kafka Visualiser</h1>
-        <Visualiser events={events} />
+        <Visualiser events={events} options={options} />
         <OptionsMenu
           events={events}
           updateEventWhitelist={this.updateEventWhitelist}

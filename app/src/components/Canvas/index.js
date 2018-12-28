@@ -129,7 +129,7 @@ export default class Canvas extends Component {
   }
 
   render() {
-    const canvasWidth = window.innerWidth * 0.7;
+    const canvasWidth = window.innerWidth * 0.75;
     const canvasHeight = window.innerHeight - 60;
 
     return (

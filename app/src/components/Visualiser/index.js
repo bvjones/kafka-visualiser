@@ -34,6 +34,7 @@ export default class Visualiser extends Component {
   constructor(props) {
     super(props);
     this.state = { events: {}, eventTrends: {} };
+    this.props = props;
 
     this.calculateTrends = this.calculateTrends.bind(this);
 
@@ -96,13 +97,16 @@ export default class Visualiser extends Component {
   render() {
     const visualiserHeight = window.innerHeight - 60;
     const numberOfEvents = Object.keys(this.state.events).length;
+    const { showTrends } = this.props.options;
 
     return (
       <div className={styles.visualiserContainer}>
         <div className={styles.eventSummaries}>
-          <span className={styles.chartLegend}>
-            last {maxTrendHistoryMins} mins
-          </span>
+          {showTrends && (
+            <span className={styles.chartLegend}>
+              last {maxTrendHistoryMins} mins
+            </span>
+          )}
           {Object.entries(this.state.events).map(
             ({ 0: name, 1: value }, index) => {
               const topPosition =
@@ -118,6 +122,7 @@ export default class Visualiser extends Component {
                     name={name}
                     color={value.color}
                     count={value.count}
+                    showTrends={showTrends}
                     trendValues={
                       get(this.state.eventTrends, `[${name}].trendValues`) || []
                     }
@@ -134,5 +139,6 @@ export default class Visualiser extends Component {
 }
 
 Visualiser.propTypes = {
-  events: PropTypes.shape({}).isRequired
+  events: PropTypes.shape({}).isRequired,
+  options: PropTypes.shape({}).isRequired
 };
