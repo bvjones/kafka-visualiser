@@ -25,7 +25,13 @@ export default class OptionsMenu extends Component {
 
   render() {
     const { optionsOpen } = this.state;
-    const { events, options, updateEventWhitelist, toggleOption } = this.props;
+    const {
+      events,
+      options,
+      updateEventWhitelist,
+      toggleOption,
+      updateOptionValue
+    } = this.props;
 
     return (
       <div>
@@ -46,7 +52,11 @@ export default class OptionsMenu extends Component {
             events={events}
             updateEventWhitelist={updateEventWhitelist}
           />
-          <ConfigOptions options={options} toggleOption={toggleOption} />
+          <ConfigOptions
+            options={options}
+            toggleOption={toggleOption}
+            updateOptionValue={updateOptionValue}
+          />
         </div>
       </div>
     );
@@ -57,5 +67,6 @@ OptionsMenu.propTypes = {
   events: PropTypes.shape({}).isRequired,
   updateEventWhitelist: PropTypes.func.isRequired,
   options: PropTypes.shape({}).isRequired,
-  toggleOption: PropTypes.func.isRequired
+  toggleOption: PropTypes.func.isRequired,
+  updateOptionValue: PropTypes.func.isRequired
 };
