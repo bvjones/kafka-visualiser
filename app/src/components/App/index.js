@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Cookies from 'js-cookie';
 import openSocket from 'socket.io-client';
 import Visualiser from '../Visualiser';
 import OptionsMenu from '../OptionsMenu';
@@ -16,6 +17,7 @@ class App extends Component {
       }
     };
 
+    this.blacklist = [];
     this.events = {};
 
     this.incrementEventCounts = this.incrementEventCounts.bind(this);
@@ -34,7 +36,9 @@ class App extends Component {
           count: existingEvent
             ? existingEvent.count + value.count
             : value.count,
-          whitelisted: existingEvent ? existingEvent.whitelisted : true
+          whitelisted: existingEvent
+            ? existingEvent.whitelisted
+            : !this.blacklist.includes(name)
         }
       };
     });
@@ -44,14 +48,25 @@ class App extends Component {
     const target = changeEvent.target;
     const name = target.name;
 
+    const whitelisted = !this.events[name].whitelisted;
+
     this.events = {
       ...this.events,
       [name]: {
         ...this.events[name],
-        whitelisted: !this.events[name].whitelisted
+        whitelisted
       }
     };
 
+    if (!whitelisted) {
+      this.blacklist.push(name);
+    } else {
+      this.blacklist = this.blacklist.filter(eventName => {
+        return eventName !== name;
+      });
+    }
+
+    Cookies.set('blacklist', this.blacklist, { expires: 365 });
     this.updateEventsState();
   }
 
@@ -66,12 +81,14 @@ class App extends Component {
     this.setState({
       options: {
         ...this.state.options,
-        [name]: !this.state.options[name],
+        [name]: !this.state.options[name]
       }
-    })
+    });
   }
 
   componentWillMount() {
+    this.blacklist = Cookies.getJSON('blacklist') || [];
+
     this.socket = openSocket(
       process.env.NODE_ENV === 'development'
         ? 'http://localhost:3001'
