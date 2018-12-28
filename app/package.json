@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "color-hash": "^1.0.3",
+    "js-cookie": "^2.2.0",
     "lodash.get": "^4.4.2",
     "lodash.orderby": "^4.6.0",
     "numeral": "^2.0.6",
