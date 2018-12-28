@@ -9,5 +9,14 @@
   padding-left: 15px;
   margin-left: 15px;
   border-left: 2px var(--off-black) solid;
-  flex: 1 0 auto;
+  flex: 1 1 auto;
+}
+
+.infoText {
+  max-width: 200px;
+  color: var(--white);
+  opacity: 0.7;
+  font-size: 12px;
+  margin-top: 10px;
+  font-style: italic;
 }

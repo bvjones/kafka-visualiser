@@ -5,6 +5,11 @@ import Visualiser from '../Visualiser';
 import OptionsMenu from '../OptionsMenu';
 import styles from './index.module.css';
 
+import {
+  EVENT_COUNT_TREND_INTERVAL_MS,
+  EVENT_COUNT_TREND_MAX_HISTORY
+} from '../../constants';
+
 class App extends Component {
   constructor() {
     super();
@@ -13,7 +18,9 @@ class App extends Component {
     this.state = {
       events: {},
       options: {
-        showTrends: false
+        showTrends: false,
+        eventCountTrendIntervalMs: EVENT_COUNT_TREND_INTERVAL_MS,
+        eventCountTrendMaxHistoryMs: EVENT_COUNT_TREND_MAX_HISTORY,
       }
     };
 
@@ -23,6 +30,7 @@ class App extends Component {
     this.incrementEventCounts = this.incrementEventCounts.bind(this);
     this.updateEventWhitelist = this.updateEventWhitelist.bind(this);
     this.toggleOption = this.toggleOption.bind(this);
+    this.updateOptionValue = this.updateOptionValue.bind(this);
     this.updateEventsState = this.updateEventsState.bind(this);
   }
 
@@ -86,6 +94,17 @@ class App extends Component {
     });
   }
 
+  updateOptionValue(changeEvent) {
+    const target = changeEvent.target;
+    const {name, value} = target;
+    this.setState({
+      options: {
+        ...this.state.options,
+        [name]: value,
+      }
+    });
+  }
+
   componentWillMount() {
     this.blacklist = Cookies.getJSON('blacklist') || [];
 
@@ -116,6 +135,7 @@ class App extends Component {
           updateEventWhitelist={this.updateEventWhitelist}
           options={options}
           toggleOption={this.toggleOption}
+          updateOptionValue={this.updateOptionValue}
         />
       </div>
     );

@@ -3,11 +3,6 @@ import PropTypes from 'prop-types';
 import get from 'lodash.get';
 import orderBy from 'lodash.orderby';
 import styles from './index.module.css';
-import {
-  EVENT_COUNT_TREND_INTERVAL_MS,
-  EVENT_COUNT_TREND_MAX_HISTORY
-} from '../../constants';
-
 import Canvas from '../Canvas';
 import EventSummary from '../EventSummary';
 
@@ -23,12 +18,7 @@ const getNextColor = () => {
   return colors.pop();
 };
 
-const maxTrendValues =
-  EVENT_COUNT_TREND_MAX_HISTORY / EVENT_COUNT_TREND_INTERVAL_MS;
-
 const startTime = Date.now();
-
-const maxTrendHistoryMins = EVENT_COUNT_TREND_MAX_HISTORY / 60000;
 
 export default class Visualiser extends Component {
   constructor(props) {
@@ -41,11 +31,20 @@ export default class Visualiser extends Component {
     };
     this.props = props;
 
+    const {
+      eventCountTrendIntervalMs,
+      eventCountTrendMaxHistoryMs
+    } = this.props.options;
+
+    this.maxTrendValues = eventCountTrendMaxHistoryMs / eventCountTrendIntervalMs;
+
+    this.maxTrendHistoryMins = eventCountTrendMaxHistoryMs / 60000;
+
     this.calculateTrends = this.calculateTrends.bind(this);
 
     window.setInterval(() => {
       this.calculateTrends();
-    }, EVENT_COUNT_TREND_INTERVAL_MS);
+    }, eventCountTrendIntervalMs);
   }
 
   calculateTrends() {
@@ -53,12 +52,12 @@ export default class Visualiser extends Component {
     const newEventTrends = {};
     let totalIncrement = 0;
     let newTotalCount = totalCount;
+    const { eventCountTrendIntervalMs } = this.props.options;
 
     Object.entries(this.state.events).forEach(({ 0: name, 1: value }) => {
       const previousCount = get(eventTrends, `[${name}].lastCount`) || 0;
       const increment = value.count - previousCount;
-      const incrementPerSecond =
-        increment / (EVENT_COUNT_TREND_INTERVAL_MS / 1000);
+      const incrementPerSecond = increment / (eventCountTrendIntervalMs / 1000);
       totalIncrement += increment;
       newTotalCount += value.count;
 
@@ -66,7 +65,7 @@ export default class Visualiser extends Component {
 
       trendValues.push({ x: Date.now() - startTime, y: incrementPerSecond });
 
-      if (trendValues.length > maxTrendValues) {
+      if (trendValues.length > this.maxTrendValues) {
         trendValues.shift();
       }
 
@@ -77,7 +76,7 @@ export default class Visualiser extends Component {
     });
 
     const totalEventsPerSecond =
-      totalIncrement / (EVENT_COUNT_TREND_INTERVAL_MS / 1000);
+      totalIncrement / (eventCountTrendIntervalMs / 1000);
 
     this.setState({
       eventTrends: newEventTrends,
@@ -120,7 +119,7 @@ export default class Visualiser extends Component {
         <div className={styles.eventSummaries}>
           {showTrends && (
             <span className={styles.chartLegend}>
-              last {maxTrendHistoryMins} mins
+              last {this.maxTrendHistoryMins} mins
             </span>
           )}
           {Object.entries(this.state.events).map(

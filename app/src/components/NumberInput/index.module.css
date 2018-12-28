@@ -1,0 +1,29 @@
+.inputContainer {
+  margin-top: 15%;
+}
+
+.input {
+  width: 75%;
+  background-color: var(--off-black);
+  border: none;
+  height: 30px;
+  color: var(--neon-blue);
+  font-family: var(--roboto);
+  font-size: 18px;
+  border-radius: 3px;
+  padding: 5px;
+  text-align: right;
+  position: relative;
+  border: 2px transparent solid;
+  transition: border 0.5s ease-out;
+}
+
+.input:focus, .input:active {
+  outline: none;
+  border: 2px var(--neon-blue) solid;
+}
+
+.inputLabel {
+  display: block;
+  margin-top: 5px;
+}
