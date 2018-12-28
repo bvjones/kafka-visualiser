@@ -51,6 +51,8 @@ class App extends Component {
         whitelisted: !this.events[name].whitelisted
       }
     };
+
+    this.updateEventsState();
   }
 
   updateEventsState() {

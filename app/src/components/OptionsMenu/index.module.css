@@ -20,6 +20,7 @@
 
 .optionsMenu {
   position: fixed;
+  z-index: 100;
   top: 60px;
   height: calc(100% - 60px);
   width: 100%;
