@@ -2,7 +2,7 @@ import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styles from './index.module.css';
 import TrendChart from '../TrendChart';
-import numeral from 'numeral';
+import formatDisplayNumber from '../../utils/formatDisplayNumber';
 
 export default function EventSummary({
   name,
@@ -11,14 +11,11 @@ export default function EventSummary({
   trendValues,
   showTrends
 }) {
-  const displayCount = count < 1000 ? count : numeral(count).format('0.0a');
+  const displayCount = formatDisplayNumber(count);
 
   const perSecondCount =
     trendValues.length > 0 ? trendValues[trendValues.length - 1].y : 0;
-  const displayPerSecondCount =
-    perSecondCount < 1000
-      ? perSecondCount
-      : numeral(perSecondCount).format('0.0a');
+  const displayPerSecondCount = formatDisplayNumber(perSecondCount);
 
   return (
     <div className={styles.eventSummaryContainer}>

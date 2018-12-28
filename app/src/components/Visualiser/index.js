@@ -33,7 +33,12 @@ const maxTrendHistoryMins = EVENT_COUNT_TREND_MAX_HISTORY / 60000;
 export default class Visualiser extends Component {
   constructor(props) {
     super(props);
-    this.state = { events: {}, eventTrends: {} };
+    this.state = {
+      events: {},
+      eventTrends: {},
+      totalEventsPerSecond: 0,
+      totalCount: 0
+    };
     this.props = props;
 
     this.calculateTrends = this.calculateTrends.bind(this);
@@ -44,14 +49,18 @@ export default class Visualiser extends Component {
   }
 
   calculateTrends() {
-    const { eventTrends } = this.state;
+    const { eventTrends, totalCount } = this.state;
     const newEventTrends = {};
+    let totalIncrement = 0;
+    let newTotalCount = totalCount;
 
     Object.entries(this.state.events).forEach(({ 0: name, 1: value }) => {
       const previousCount = get(eventTrends, `[${name}].lastCount`) || 0;
       const increment = value.count - previousCount;
       const incrementPerSecond =
         increment / (EVENT_COUNT_TREND_INTERVAL_MS / 1000);
+      totalIncrement += increment;
+      newTotalCount += value.count;
 
       let trendValues = [...(get(eventTrends, `[${name}].trendValues`) || [])];
 
@@ -67,7 +76,14 @@ export default class Visualiser extends Component {
       };
     });
 
-    this.setState({ eventTrends: newEventTrends });
+    const totalEventsPerSecond =
+      totalIncrement / (EVENT_COUNT_TREND_INTERVAL_MS / 1000);
+
+    this.setState({
+      eventTrends: newEventTrends,
+      totalCount: newTotalCount,
+      totalEventsPerSecond
+    });
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -133,7 +149,11 @@ export default class Visualiser extends Component {
             }
           )}
         </div>
-        <Canvas events={this.state.events} />
+        <Canvas
+          events={this.state.events}
+          totalCount={this.state.totalCount}
+          totalEventsPerSecond={this.state.totalEventsPerSecond}
+        />
       </div>
     );
   }
