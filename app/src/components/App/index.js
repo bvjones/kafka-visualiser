@@ -20,7 +20,7 @@ class App extends Component {
 
     this.incrementEventCounts = this.incrementEventCounts.bind(this);
     this.updateEventWhitelist = this.updateEventWhitelist.bind(this);
-    this.updateOptions = this.updateOptions.bind(this);
+    this.toggleOption = this.toggleOption.bind(this);
     this.updateEventsState = this.updateEventsState.bind(this);
   }
 
@@ -57,8 +57,16 @@ class App extends Component {
     this.setState({ events: this.events });
   }
 
-  updateOptions(options) {
-    this.setState({ options: { ...this.state.options, options } });
+  toggleOption(changeEvent) {
+    const target = changeEvent.target;
+    const name = target.name;
+
+    this.setState({
+      options: {
+        ...this.state.options,
+        [name]: !this.state.options[name],
+      }
+    })
   }
 
   componentWillMount() {
@@ -78,7 +86,7 @@ class App extends Component {
   }
 
   render() {
-    const { events } = this.state;
+    const { events, options } = this.state;
 
     return (
       <div>
@@ -87,7 +95,8 @@ class App extends Component {
         <OptionsMenu
           events={events}
           updateEventWhitelist={this.updateEventWhitelist}
-          updateEventsState={this.updateEventsState}
+          options={options}
+          toggleOption={this.toggleOption}
         />
       </div>
     );

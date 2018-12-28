@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import CogIcon from '../CogIcon';
 import WhiteList from '../WhiteList';
+import ConfigOptions from '../ConfigOptions';
 import styles from './index.module.css';
 
 export default class OptionsMenu extends Component {
@@ -24,6 +25,7 @@ export default class OptionsMenu extends Component {
 
   render() {
     const { optionsOpen } = this.state;
+    const { events, options, updateEventWhitelist, toggleOption } = this.props;
 
     return (
       <div>
@@ -41,9 +43,10 @@ export default class OptionsMenu extends Component {
           }`}
         >
           <WhiteList
-            events={this.props.events}
-            updateEventWhitelist={this.props.updateEventWhitelist}
+            events={events}
+            updateEventWhitelist={updateEventWhitelist}
           />
+          <ConfigOptions options={options} toggleOption={toggleOption} />
         </div>
       </div>
     );
@@ -52,5 +55,7 @@ export default class OptionsMenu extends Component {
 
 OptionsMenu.propTypes = {
   events: PropTypes.shape({}).isRequired,
-  updateEventWhitelist: PropTypes.func.isRequired
+  updateEventWhitelist: PropTypes.func.isRequired,
+  options: PropTypes.shape({}).isRequired,
+  toggleOption: PropTypes.func.isRequired
 };

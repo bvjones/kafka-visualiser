@@ -12,6 +12,8 @@ export default function WhiteList({ events, updateEventWhitelist }) {
         checked={whitelisted}
         onChange={updateEventWhitelist}
         name={name}
+        key={name}
+        displayName={name}
       />
     );
   });
