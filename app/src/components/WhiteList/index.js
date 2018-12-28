@@ -1,10 +1,14 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import CheckBox from '../CheckBox';
+import orderBy from 'lodash.orderby';
 import styles from './index.module.css';
 
 export default function WhiteList({ events, updateEventWhitelist }) {
-  const eventSelects = Object.entries(events).map(({ 0: name, 1: value }) => {
+  const eventObjects = Object.entries(events);
+  const sortedEvents = orderBy(eventObjects, ['0']); 
+
+  const eventSelects = sortedEvents.map(({ 0: name, 1: value }) => {
     const { whitelisted } = value;
 
     return (

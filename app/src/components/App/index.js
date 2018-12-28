@@ -12,7 +12,7 @@ class App extends Component {
     this.state = {
       events: {},
       options: {
-        showTrends: true
+        showTrends: false
       }
     };
 

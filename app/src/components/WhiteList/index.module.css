@@ -3,6 +3,7 @@
 .whitelistContainer {
   height: 100%;
   overflow: scroll;
+  flex: 1 1 100%;
 }
 
 .title {

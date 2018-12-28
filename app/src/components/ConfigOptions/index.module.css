@@ -9,4 +9,5 @@
   padding-left: 15px;
   margin-left: 15px;
   border-left: 2px var(--off-black) solid;
+  flex: 1 0 auto;
 }

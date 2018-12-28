@@ -25,17 +25,17 @@ const eventTypes = [
   'helloMG',
   'ChrisLovesKafka2',
   'JoshMakeTea2',
-  // 'AlbertIsAwesome2',
-  // 'BenAndRick=TheBest2',
-  // 'helloMG2',
-  // 'DanAbramov',
-  // 'JoshMakeTea3',
-  // 'AlbertIsAwesome3',
-  // 'BenAndRick=TheBest3',
-  // 'helloMG3',
-  // 'ChrisLovesKafka4',
-  // 'JoshMakeTea4',
-  // 'AlbertIsAwesome4',
+  'AlbertIsAwesome2',
+  'BenAndRick=TheBest2',
+  'helloMG2',
+  'DanAbramov',
+  'JoshMakeTea3',
+  'AlbertIsAwesome3',
+  'BenAndRick=TheBest3',
+  'helloMG3',
+  'ChrisLovesKafka4',
+  'JoshMakeTea4',
+  'AlbertIsAwesome4',
   // 'BenAndRick=TheBest4',
   // 'Urmo',
   // 'ChrisLovesKafka5',
@@ -139,7 +139,7 @@ producer.on('ready', () => {
         }
       },
     );
-  }, 400);
+  }, 50);
 });
 
 producer.on('error', err => {
