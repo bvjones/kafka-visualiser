@@ -48,7 +48,7 @@ function Circle({
     this.x += this.dx;
 
     if (this.x > congregatePoint) {
-      if (this.y !== this.targetY && Math.abs(this.y - this.targetY) > 5) {
+      if (this.y !== this.targetY && Math.abs(this.y - this.targetY) > 10) {
         if (this.y > this.targetY) {
           this.y = this.y - (this.x - congregatePoint) * 0.03;
         } else {
