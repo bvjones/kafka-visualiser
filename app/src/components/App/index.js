@@ -15,13 +15,15 @@ class App extends Component {
     super();
     this.socket = null;
 
+    const defaultOptions = {
+      showTrends: false,
+      eventCountTrendIntervalMs: EVENT_COUNT_TREND_INTERVAL_MS,
+      eventCountTrendMaxHistoryMs: EVENT_COUNT_TREND_MAX_HISTORY
+    };
+
     this.state = {
       events: {},
-      options: {
-        showTrends: false,
-        eventCountTrendIntervalMs: EVENT_COUNT_TREND_INTERVAL_MS,
-        eventCountTrendMaxHistoryMs: EVENT_COUNT_TREND_MAX_HISTORY
-      }
+      options: Cookies.getJSON('options') || defaultOptions
     };
 
     this.blacklist = [];
@@ -82,11 +84,15 @@ class App extends Component {
   }
 
   updateOptions(options) {
+    const updatedOptions = {
+      ...this.state.options,
+      ...options
+    };
+
+    Cookies.set('options', updatedOptions, { expires: 365 });
+
     this.setState({
-      options: {
-        ...this.state.options,
-        ...options
-      }
+      options: updatedOptions
     });
   }
 
