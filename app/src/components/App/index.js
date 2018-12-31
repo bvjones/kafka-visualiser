@@ -20,7 +20,7 @@ class App extends Component {
       options: {
         showTrends: false,
         eventCountTrendIntervalMs: EVENT_COUNT_TREND_INTERVAL_MS,
-        eventCountTrendMaxHistoryMs: EVENT_COUNT_TREND_MAX_HISTORY,
+        eventCountTrendMaxHistoryMs: EVENT_COUNT_TREND_MAX_HISTORY
       }
     };
 
@@ -29,9 +29,8 @@ class App extends Component {
 
     this.incrementEventCounts = this.incrementEventCounts.bind(this);
     this.updateEventWhitelist = this.updateEventWhitelist.bind(this);
-    this.toggleOption = this.toggleOption.bind(this);
-    this.updateOptionValue = this.updateOptionValue.bind(this);
     this.updateEventsState = this.updateEventsState.bind(this);
+    this.updateOptions = this.updateOptions.bind(this);
   }
 
   incrementEventCounts(aggregatedEvents) {
@@ -82,25 +81,11 @@ class App extends Component {
     this.setState({ events: this.events });
   }
 
-  toggleOption(changeEvent) {
-    const target = changeEvent.target;
-    const name = target.name;
-
+  updateOptions(options) {
     this.setState({
       options: {
         ...this.state.options,
-        [name]: !this.state.options[name]
-      }
-    });
-  }
-
-  updateOptionValue(changeEvent) {
-    const target = changeEvent.target;
-    const {name, value} = target;
-    this.setState({
-      options: {
-        ...this.state.options,
-        [name]: parseInt(value, 10),
+        ...options
       }
     });
   }
@@ -134,8 +119,7 @@ class App extends Component {
           events={events}
           updateEventWhitelist={this.updateEventWhitelist}
           options={options}
-          toggleOption={this.toggleOption}
-          updateOptionValue={this.updateOptionValue}
+          updateOptions={this.updateOptions}
         />
       </div>
     );

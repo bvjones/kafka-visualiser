@@ -1,14 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import formatDisplayNumber from '../../utils/formatDisplayNumber';
-import {
-  EVENT_COUNT_TREND_MAX_HISTORY,
-  EVENT_COUNT_TREND_INTERVAL_MS
-} from '../../constants';
 import styles from './index.module.css';
-
-const maxEventPoints =
-  EVENT_COUNT_TREND_MAX_HISTORY / EVENT_COUNT_TREND_INTERVAL_MS;
 
 export default class TrendChart extends Component {
   constructor(props) {
@@ -20,7 +13,7 @@ export default class TrendChart extends Component {
     this.lastDrawnPoint = null;
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
+  shouldComponentUpdate(nextProps) {
     const { trendValues } = nextProps;
 
     if (
@@ -36,7 +29,7 @@ export default class TrendChart extends Component {
   }
 
   updateAnimationState() {
-    const { trendValues } = this.props;
+    const { trendValues, maxTrendValues } = this.props;
     const canvas = this.canvasRef.current;
     const brush = canvas.getContext('2d');
 
@@ -60,7 +53,7 @@ export default class TrendChart extends Component {
 
     this.maxY = maxY;
 
-    const pointSpacing = (canvas.width - 1) / maxEventPoints;
+    const pointSpacing = (canvas.width - 1) / maxTrendValues;
 
     const maxHeight = canvas.height * 0.9;
     const heightOffSet = canvas.height - maxHeight;
@@ -103,7 +96,8 @@ export default class TrendChart extends Component {
 }
 
 TrendChart.propTypes = {
-  trendValues: PropTypes.arrayOf(PropTypes.shape({}))
+  trendValues: PropTypes.arrayOf(PropTypes.shape({})),
+  maxTrendValues: PropTypes.number.isRequired,
 };
 
 TrendChart.defaultProps = {
