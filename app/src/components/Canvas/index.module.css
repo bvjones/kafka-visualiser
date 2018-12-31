@@ -18,7 +18,7 @@
 .counter {
   position: absolute;
   top: calc(50% - 30.5px);
-  right: 30px;
+  right: 5%;
   z-index: 10;
   color: var(--white);
   text-align: center;

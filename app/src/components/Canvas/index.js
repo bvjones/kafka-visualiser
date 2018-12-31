@@ -50,9 +50,9 @@ function Circle({
     if (this.x > congregatePoint) {
       if (this.y !== this.targetY && Math.abs(this.y - this.targetY) > 5) {
         if (this.y > this.targetY) {
-          this.y = this.y - (this.x - congregatePoint) * 0.02;
+          this.y = this.y - (this.x - congregatePoint) * 0.03;
         } else {
-          this.y = this.y + (this.x - congregatePoint) * 0.02;
+          this.y = this.y + (this.x - congregatePoint) * 0.03;
         }
       }
     } else {
