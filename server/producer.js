@@ -139,7 +139,7 @@ producer.on('ready', () => {
         }
       },
     );
-  }, 5);
+  }, 50);
 });
 
 producer.on('error', err => {
