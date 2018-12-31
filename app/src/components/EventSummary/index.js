@@ -9,7 +9,8 @@ export default function EventSummary({
   count,
   color,
   trendValues,
-  showTrends
+  showTrends,
+  maxTrendValues
 }) {
   const displayCount = formatDisplayNumber(count);
 
@@ -21,7 +22,7 @@ export default function EventSummary({
     <div className={styles.eventSummaryContainer}>
       {showTrends && (
         <Fragment>
-          <TrendChart trendValues={trendValues} color={color} />
+          <TrendChart trendValues={trendValues} color={color} maxTrendValues={maxTrendValues} />
           <span style={{ color: color }} className={styles.perSecondCount}>
             {displayPerSecondCount}/s
           </span>
@@ -56,7 +57,8 @@ EventSummary.propTypes = {
   name: PropTypes.string.isRequired,
   count: PropTypes.number.isRequired,
   trendValues: PropTypes.arrayOf(PropTypes.shape({})),
-  showTrends: PropTypes.bool.isRequired
+  showTrends: PropTypes.bool.isRequired,
+  maxTrendValues: PropTypes.number.isRequired
 };
 
 EventSummary.defaultProps = {

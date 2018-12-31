@@ -52,10 +52,10 @@ export default class Visualiser extends Component {
   }
 
   calculateTrends() {
-    const { eventTrends, totalCount, maxTrendValues } = this.state;
+    const { eventTrends, maxTrendValues } = this.state;
     const newEventTrends = {};
     let totalIncrement = 0;
-    let newTotalCount = totalCount;
+    let newTotalCount = 0;
     const { eventCountTrendIntervalMs } = this.props.options;
 
     Object.entries(this.state.events).forEach(({ 0: name, 1: value }) => {
@@ -70,7 +70,8 @@ export default class Visualiser extends Component {
       trendValues.push({ x: Date.now() - startTime, y: incrementPerSecond });
 
       if (trendValues.length > maxTrendValues) {
-        trendValues.shift();
+        const valuesToRemove = trendValues.length - maxTrendValues;
+        trendValues.splice(0, valuesToRemove);
       }
 
       newEventTrends[name] = {
@@ -134,10 +135,6 @@ export default class Visualiser extends Component {
       prevProps.options.eventCountTrendIntervalMs !==
       this.props.options.eventCountTrendIntervalMs
     ) {
-      console.log('INTERNAVL UPDATED');
-      console.log('OLD', prevProps.options.eventCountTrendIntervalMs);
-      console.log('NEW', this.props.options.eventCountTrendIntervalMs);
-
       window.clearInterval(this.calculationInterval);
 
       this.calculationInterval = window.setInterval(() => {
@@ -150,45 +147,50 @@ export default class Visualiser extends Component {
     const visualiserHeight = window.innerHeight - 60;
     const numberOfEvents = Object.keys(this.state.events).length;
     const { showTrends } = this.props.options;
+    const {
+      maxTrendValues,
+      maxTrendHistoryMins,
+      events,
+      eventTrends,
+      totalCount,
+      totalEventsPerSecond
+    } = this.state;
 
     return (
       <div className={styles.visualiserContainer}>
         <div className={styles.eventSummaries}>
           {showTrends && (
             <span className={styles.chartLegend}>
-              last {this.state.maxTrendHistoryMins} mins
+              last {maxTrendHistoryMins} mins
             </span>
           )}
-          {Object.entries(this.state.events).map(
-            ({ 0: name, 1: value }, index) => {
-              const topPosition =
-                (visualiserHeight / (numberOfEvents + 1)) * (index + 1);
+          {Object.entries(events).map(({ 0: name, 1: value }, index) => {
+            const topPosition =
+              (visualiserHeight / (numberOfEvents + 1)) * (index + 1);
 
-              return (
-                <div
-                  key={name}
-                  className={styles.summary}
-                  // Vertically center the event summary dependent on its height
-                  style={{ top: `${topPosition - (showTrends ? 29 : 10)}px` }}
-                >
-                  <EventSummary
-                    name={name}
-                    color={value.color}
-                    count={value.count}
-                    showTrends={showTrends}
-                    trendValues={
-                      get(this.state.eventTrends, `[${name}].trendValues`) || []
-                    }
-                  />
-                </div>
-              );
-            }
-          )}
+            return (
+              <div
+                key={name}
+                className={styles.summary}
+                // Vertically center the event summary dependent on its height
+                style={{ top: `${topPosition - (showTrends ? 29 : 10)}px` }}
+              >
+                <EventSummary
+                  name={name}
+                  color={value.color}
+                  count={value.count}
+                  showTrends={showTrends}
+                  maxTrendValues={maxTrendValues}
+                  trendValues={get(eventTrends, `[${name}].trendValues`) || []}
+                />
+              </div>
+            );
+          })}
         </div>
         <Canvas
-          events={this.state.events}
-          totalCount={this.state.totalCount}
-          totalEventsPerSecond={this.state.totalEventsPerSecond}
+          events={events}
+          totalCount={totalCount}
+          totalEventsPerSecond={totalEventsPerSecond}
         />
       </div>
     );
