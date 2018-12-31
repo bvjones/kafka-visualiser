@@ -1,8 +1,7 @@
-@import "../../css/colors.css";
+@import '../../css/colors.css';
 
 .whitelistContainer {
   height: 100%;
-  overflow: scroll;
   flex: 1 1 100%;
 }
 
@@ -18,6 +17,21 @@
   flex-direction: column;
   flex-wrap: wrap;
   align-items: flex-start;
-  max-height: 90%;
+  align-content: flex-start;
+  max-height: 100%;
   overflow-x: scroll;
+  padding-bottom: 10px;
+}
+
+.eventsContainer::-webkit-scrollbar {
+  width: 1em;
+}
+
+.eventsContainer::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+
+.eventsContainer::-webkit-scrollbar-thumb {
+  background-color: var(--off-black);
+  border-radius: 5px;
 }
