@@ -70,6 +70,24 @@ export default class Canvas extends Component {
     this.canvasRef = React.createRef();
     this.circles = [];
     this.updateAnimationState = this.updateAnimationState.bind(this);
+
+    const canvasWidth = window.innerWidth * 0.75;
+    const canvasHeight = window.innerHeight - 60;
+
+    this.state = {
+      canvasWidth,
+      canvasHeight,
+      congregatePoint: canvasWidth * 0.5,
+      midHeight: canvasHeight / 2,
+      dpr: window.devicePixelRatio || 1
+    };
+
+    window.addEventListener('resize', () => {
+      this.setState({
+        canvasWidth: window.innerWidth * 0.75,
+        canvasHeight: window.innerHeight - 60
+      });
+    });
   }
 
   updateAnimationState() {
@@ -93,6 +111,11 @@ export default class Canvas extends Component {
 
   componentDidMount() {
     this.rAF = requestAnimationFrame(this.updateAnimationState);
+    const { dpr } = this.state;
+    const canvas = this.canvasRef.current;
+    const rect = canvas.getBoundingClientRect();
+    canvas.width = rect.width * dpr;
+    canvas.height = rect.height * dpr;
   }
 
   componentWillUnmount() {
@@ -100,17 +123,16 @@ export default class Canvas extends Component {
   }
 
   componentDidUpdate() {
+    const { dpr, canvasHeight, congregatePoint, midHeight } = this.state;
     const canvas = this.canvasRef.current;
     const brush = canvas.getContext('2d');
-
-    const congregatePoint = canvas.width * 0.5;
-    const midHeight = canvas.height / 2;
+    brush.scale(dpr, dpr);
 
     Object.entries(this.props.events).forEach(({ 1: value }, index) => {
       // Dynamically set circle vertical position based on canvas height and number of event types
       if (value.increment > 0) {
         const circleY =
-          (canvas.height / (Object.keys(this.props.events).length + 1)) *
+          (canvasHeight / (Object.keys(this.props.events).length + 1)) *
           (index + 1);
 
         this.circles.push(
@@ -118,6 +140,7 @@ export default class Canvas extends Component {
             brush,
             color: value.color,
             y: circleY,
+            // dx,
             numberOfEvents: value.increment,
             congregatePoint,
             midHeight
@@ -128,20 +151,20 @@ export default class Canvas extends Component {
   }
 
   render() {
-    const canvasWidth = window.innerWidth * 0.75;
-    const canvasHeight = window.innerHeight - 60;
     const { totalCount, totalEventsPerSecond } = this.props;
+    const { canvasWidth, canvasHeight } = this.state;
 
     return (
       <div className={styles.canvasContainer}>
         <div className={styles.counter}>
-          <span className={styles.totalCount}>{formatDisplayNumber(totalCount)}</span>
+          <span className={styles.totalCount}>
+            {formatDisplayNumber(totalCount)}
+          </span>
           <span>{formatDisplayNumber(totalEventsPerSecond)}/s</span>
         </div>
         <canvas
           className={styles.canvas}
-          width={canvasWidth}
-          height={canvasHeight}
+          style={{ width: canvasWidth, height: canvasHeight }}
           ref={this.canvasRef}
         />
       </div>
