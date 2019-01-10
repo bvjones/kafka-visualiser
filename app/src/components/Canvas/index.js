@@ -70,6 +70,7 @@ export default class Canvas extends Component {
     this.canvasRef = React.createRef();
     this.circles = [];
     this.updateAnimationState = this.updateAnimationState.bind(this);
+    this.setCanvasSize = this.setCanvasSize.bind(this);
 
     const canvasAttributes = this.calculateCanvasAttributes();
 
@@ -82,6 +83,7 @@ export default class Canvas extends Component {
       this.setState({
         ...canvasAttributes
       });
+      this.setCanvasSize(canvasAttributes);
     });
   }
 
@@ -110,6 +112,14 @@ export default class Canvas extends Component {
     };
   }
 
+  setCanvasSize({canvasScaledWidth, canvasScaledHeight, dpr}) {
+    const canvas = this.canvasRef.current;
+    canvas.width = canvasScaledWidth;
+    canvas.height = canvasScaledHeight;
+    const brush = canvas.getContext('2d');
+    brush.scale(dpr, dpr);
+  }
+
   updateAnimationState() {
     const canvas = this.canvasRef.current;
     const brush = canvas.getContext('2d');
@@ -130,12 +140,7 @@ export default class Canvas extends Component {
   }
 
   componentDidMount() {
-    const { dpr, canvasScaledWidth, canvasScaledHeight } = this.state;
-    const canvas = this.canvasRef.current;
-    canvas.width = canvasScaledWidth;
-    canvas.height = canvasScaledHeight;
-    const brush = canvas.getContext('2d');
-    brush.scale(dpr, dpr);
+    this.setCanvasSize(this.state);
     this.rAF = requestAnimationFrame(this.updateAnimationState);
   }
 
