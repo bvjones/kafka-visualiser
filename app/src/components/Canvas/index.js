@@ -71,29 +71,43 @@ export default class Canvas extends Component {
     this.circles = [];
     this.updateAnimationState = this.updateAnimationState.bind(this);
 
+    const canvasAttributes = this.calculateCanvasAttributes();
+
+    this.state = {
+      ...canvasAttributes
+    };
+
+    window.addEventListener('resize', () => {
+      const canvasAttributes = this.calculateCanvasAttributes();
+      this.setState({
+        ...canvasAttributes
+      });
+    });
+  }
+
+  calculateCanvasAttributes() {
     const canvasWidth = window.innerWidth * 0.75;
     const canvasHeight = window.innerHeight - 60;
     const dpr = window.devicePixelRatio || 1;
     const canvasScaledWidth = canvasWidth * dpr;
     const canvasScaledHeight = canvasHeight * dpr;
+    const circleSpeed =
+      canvasWidth > 1500
+        ? 10 + (canvasWidth / 500) * (dpr >= 2 ? dpr * 0.6 : 1)
+        : 10;
+    const congregatePoint = canvasWidth * 0.5;
+    const midHeight = canvasHeight / 2;
 
-    this.state = {
+    return {
       canvasWidth,
       canvasHeight,
-      congregatePoint: canvasWidth * 0.5,
-      midHeight: canvasHeight / 2,
-      dpr: dpr,
-      dx: (canvasWidth > 1500 ? 10 + (canvasWidth / 500) * (dpr >= 2 ? dpr * 0.6 : 1) : 10),
+      congregatePoint,
+      midHeight,
+      dpr,
+      dx: circleSpeed,
       canvasScaledWidth,
       canvasScaledHeight
     };
-
-    window.addEventListener('resize', () => {
-      this.setState({
-        canvasWidth: window.innerWidth * 0.75,
-        canvasHeight: window.innerHeight - 60
-      });
-    });
   }
 
   updateAnimationState() {
