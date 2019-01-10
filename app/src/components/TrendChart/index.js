@@ -35,7 +35,7 @@ export default class TrendChart extends Component {
 
     brush.clearRect(0, 0, canvas.width, canvas.height);
 
-    brush.lineWidth = 2;
+    brush.lineWidth = 1.3;
 
     brush.beginPath();
     brush.moveTo(1, 1);
