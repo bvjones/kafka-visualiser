@@ -48,11 +48,11 @@ function Circle({
     this.x += this.dx;
 
     if (this.x > congregatePoint) {
-      if (this.y !== this.targetY && Math.abs(this.y - this.targetY) > 10) {
+      if (this.y !== this.targetY && Math.abs(this.y - this.targetY) > 15) {
         if (this.y > this.targetY) {
-          this.y = this.y - (this.x - congregatePoint) * 0.03;
+          this.y = this.y - (this.x - congregatePoint) * 0.06;
         } else {
-          this.y = this.y + (this.x - congregatePoint) * 0.03;
+          this.y = this.y + (this.x - congregatePoint) * 0.06;
         }
       }
     } else {
@@ -73,13 +73,19 @@ export default class Canvas extends Component {
 
     const canvasWidth = window.innerWidth * 0.75;
     const canvasHeight = window.innerHeight - 60;
+    const dpr = window.devicePixelRatio || 1;
+    const canvasScaledWidth = canvasWidth * dpr;
+    const canvasScaledHeight = canvasHeight * dpr;
 
     this.state = {
       canvasWidth,
       canvasHeight,
       congregatePoint: canvasWidth * 0.5,
       midHeight: canvasHeight / 2,
-      dpr: window.devicePixelRatio || 1
+      dpr: dpr,
+      dx: (canvasWidth > 1500 ? 10 + (canvasWidth / 500) * (dpr >= 2 ? dpr * 0.6 : 1) : 10),
+      canvasScaledWidth,
+      canvasScaledHeight
     };
 
     window.addEventListener('resize', () => {
@@ -110,12 +116,13 @@ export default class Canvas extends Component {
   }
 
   componentDidMount() {
-    this.rAF = requestAnimationFrame(this.updateAnimationState);
-    const { dpr } = this.state;
+    const { dpr, canvasScaledWidth, canvasScaledHeight } = this.state;
     const canvas = this.canvasRef.current;
-    const rect = canvas.getBoundingClientRect();
-    canvas.width = rect.width * dpr;
-    canvas.height = rect.height * dpr;
+    canvas.width = canvasScaledWidth;
+    canvas.height = canvasScaledHeight;
+    const brush = canvas.getContext('2d');
+    brush.scale(dpr, dpr);
+    this.rAF = requestAnimationFrame(this.updateAnimationState);
   }
 
   componentWillUnmount() {
@@ -123,10 +130,9 @@ export default class Canvas extends Component {
   }
 
   componentDidUpdate() {
-    const { dpr, canvasHeight, congregatePoint, midHeight } = this.state;
+    const { canvasHeight, congregatePoint, midHeight, dx } = this.state;
     const canvas = this.canvasRef.current;
     const brush = canvas.getContext('2d');
-    brush.scale(dpr, dpr);
 
     Object.entries(this.props.events).forEach(({ 1: value }, index) => {
       // Dynamically set circle vertical position based on canvas height and number of event types
@@ -140,10 +146,10 @@ export default class Canvas extends Component {
             brush,
             color: value.color,
             y: circleY,
-            // dx,
             numberOfEvents: value.increment,
             congregatePoint,
-            midHeight
+            midHeight,
+            dx
           })
         );
       }
