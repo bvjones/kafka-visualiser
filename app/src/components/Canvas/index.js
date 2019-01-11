@@ -90,13 +90,13 @@ export default class Canvas extends Component {
   calculateCanvasAttributes() {
     const canvasWidth = window.innerWidth * 0.75;
     const canvasHeight = window.innerHeight - 60;
-    const dpr = window.devicePixelRatio || 1;
+    const dpr = window.devicePixelRatio < 1 ? 1 : window.devicePixelRatio || 1;
     const canvasScaledWidth = canvasWidth * dpr;
     const canvasScaledHeight = canvasHeight * dpr;
     const circleSpeed =
-      canvasWidth > 1500
-        ? 10 + (canvasWidth / 500) * (dpr >= 2 ? dpr * 0.6 : 1)
-        : 10;
+      canvasWidth > 1200
+        ? 11 + (canvasWidth / 500) * (dpr >= 2 ? dpr * 0.6 : 1)
+        : 11;
     const congregatePoint = canvasWidth * 0.5;
     const midHeight = canvasHeight / 2;
 
@@ -112,7 +112,7 @@ export default class Canvas extends Component {
     };
   }
 
-  setCanvasSize({canvasScaledWidth, canvasScaledHeight, dpr}) {
+  setCanvasSize({ canvasScaledWidth, canvasScaledHeight, dpr }) {
     const canvas = this.canvasRef.current;
     canvas.width = canvasScaledWidth;
     canvas.height = canvasScaledHeight;
