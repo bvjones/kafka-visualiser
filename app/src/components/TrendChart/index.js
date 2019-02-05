@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import formatDisplayNumber from '../../utils/formatDisplayNumber';
-import styles from './index.module.css';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import formatDisplayNumber from "../../utils/formatDisplayNumber";
+import styles from "./index.module.css";
 
 export default class TrendChart extends Component {
   constructor(props) {
@@ -29,9 +29,9 @@ export default class TrendChart extends Component {
   }
 
   updateAnimationState() {
-    const { trendValues, maxTrendValues } = this.props;
+    const { trendValues, maxTrendValues, longestTrendHistory } = this.props;
     const canvas = this.canvasRef.current;
-    const brush = canvas.getContext('2d');
+    const brush = canvas.getContext("2d");
 
     brush.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -53,13 +53,18 @@ export default class TrendChart extends Component {
 
     this.maxY = maxY;
 
-    const pointSpacing = (canvas.width - 1) / maxTrendValues;
+    const pointSpacing = (canvas.width - 3) / maxTrendValues;
 
     const maxHeight = canvas.height * 0.9;
     const heightOffSet = canvas.height - maxHeight;
 
     if (trendValues.length > 0) {
       let pointX = 2;
+
+      // If this is a new event, we need to offset its X start position based
+      // on the event with the longest trend history
+      let spacesToOffset = longestTrendHistory - trendValues.length;
+      pointX += spacesToOffset * pointSpacing;
 
       brush.beginPath();
       brush.moveTo(
@@ -98,6 +103,7 @@ export default class TrendChart extends Component {
 TrendChart.propTypes = {
   trendValues: PropTypes.arrayOf(PropTypes.shape({})),
   maxTrendValues: PropTypes.number.isRequired,
+  longestTrendHistory: PropTypes.number.isRequired
 };
 
 TrendChart.defaultProps = {

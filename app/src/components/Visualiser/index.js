@@ -1,12 +1,12 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import get from 'lodash.get';
-import orderBy from 'lodash.orderby';
-import styles from './index.module.css';
-import Canvas from '../Canvas';
-import EventSummary from '../EventSummary';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
+import get from "lodash.get";
+import orderBy from "lodash.orderby";
+import styles from "./index.module.css";
+import Canvas from "../Canvas";
+import EventSummary from "../EventSummary";
 
-const colorPalette = ['#13a8fe', '#ff00ff', '#ffa300', '#cf0060'];
+const colorPalette = ["#13a8fe", "#ff00ff", "#ffa300", "#cf0060"];
 
 let colors = [];
 
@@ -47,7 +47,8 @@ export default class Visualiser extends Component {
       totalCount: 0,
       maxTrendValues,
       maxTrendHistoryMins,
-      eventCountTrendIntervalMs
+      eventCountTrendIntervalMs,
+      longestTrendHistory: 0
     };
   }
 
@@ -56,6 +57,7 @@ export default class Visualiser extends Component {
     const newEventTrends = {};
     let totalIncrement = 0;
     let newTotalCount = 0;
+    let longestTrendHistory = 0;
     const { eventCountTrendIntervalMs } = this.props.options;
 
     Object.entries(this.state.events).forEach(({ 0: name, 1: value }) => {
@@ -74,6 +76,12 @@ export default class Visualiser extends Component {
         trendValues.splice(0, valuesToRemove);
       }
 
+      // Determine which event has the longest history
+      // (Used to work out offsets in the trend graphs for new(er) events)
+      if (trendValues.length > longestTrendHistory) {
+        longestTrendHistory = trendValues.length;
+      }
+
       newEventTrends[name] = {
         trendValues,
         lastCount: value.count
@@ -86,7 +94,8 @@ export default class Visualiser extends Component {
     this.setState({
       eventTrends: newEventTrends,
       totalCount: newTotalCount,
-      totalEventsPerSecond
+      totalEventsPerSecond,
+      longestTrendHistory,
     });
   }
 
@@ -100,7 +109,7 @@ export default class Visualiser extends Component {
     );
 
     // Sort events by name in alphabetical asc order
-    whitelistedEvents = orderBy(whitelistedEvents, ['0']);
+    whitelistedEvents = orderBy(whitelistedEvents, ["0"]);
 
     whitelistedEvents.forEach(({ 0: name, 1: value }) => {
       updatedEvents[name] = {
@@ -153,7 +162,8 @@ export default class Visualiser extends Component {
       events,
       eventTrends,
       totalCount,
-      totalEventsPerSecond
+      totalEventsPerSecond,
+      longestTrendHistory,
     } = this.state;
 
     return (
@@ -182,6 +192,7 @@ export default class Visualiser extends Component {
                   showTrends={showTrends}
                   maxTrendValues={maxTrendValues}
                   trendValues={get(eventTrends, `[${name}].trendValues`) || []}
+                  longestTrendHistory={longestTrendHistory}
                 />
               </div>
             );

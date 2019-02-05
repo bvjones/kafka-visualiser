@@ -1,8 +1,8 @@
-import React, { Fragment } from 'react';
-import PropTypes from 'prop-types';
-import styles from './index.module.css';
-import TrendChart from '../TrendChart';
-import formatDisplayNumber from '../../utils/formatDisplayNumber';
+import React, { Fragment } from "react";
+import PropTypes from "prop-types";
+import styles from "./index.module.css";
+import TrendChart from "../TrendChart";
+import formatDisplayNumber from "../../utils/formatDisplayNumber";
 
 export default function EventSummary({
   name,
@@ -10,7 +10,8 @@ export default function EventSummary({
   color,
   trendValues,
   showTrends,
-  maxTrendValues
+  maxTrendValues,
+  longestTrendHistory
 }) {
   const displayCount = formatDisplayNumber(count);
 
@@ -22,7 +23,12 @@ export default function EventSummary({
     <div className={styles.eventSummaryContainer}>
       {showTrends && (
         <Fragment>
-          <TrendChart trendValues={trendValues} color={color} maxTrendValues={maxTrendValues} />
+          <TrendChart
+            trendValues={trendValues}
+            color={color}
+            maxTrendValues={maxTrendValues}
+            longestTrendHistory={longestTrendHistory}
+          />
           <span style={{ color: color }} className={styles.perSecondCount}>
             {displayPerSecondCount}/s
           </span>
@@ -58,7 +64,8 @@ EventSummary.propTypes = {
   count: PropTypes.number.isRequired,
   trendValues: PropTypes.arrayOf(PropTypes.shape({})),
   showTrends: PropTypes.bool.isRequired,
-  maxTrendValues: PropTypes.number.isRequired
+  maxTrendValues: PropTypes.number.isRequired,
+  longestTrendHistory: PropTypes.number.isRequired
 };
 
 EventSummary.defaultProps = {
