@@ -1,12 +1,12 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import get from "lodash.get";
-import orderBy from "lodash.orderby";
-import styles from "./index.module.css";
-import Canvas from "../Canvas";
-import EventSummary from "../EventSummary";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import get from 'lodash.get';
+import orderBy from 'lodash.orderby';
+import styles from './index.module.css';
+import Canvas from '../Canvas';
+import EventSummary from '../EventSummary';
 
-const colorPalette = ["#13a8fe", "#ff00ff", "#ffa300", "#cf0060"];
+const colorPalette = ['#13a8fe', '#ff00ff', '#ffa300', '#cf0060'];
 
 let colors = [];
 
@@ -95,7 +95,7 @@ export default class Visualiser extends Component {
       eventTrends: newEventTrends,
       totalCount: newTotalCount,
       totalEventsPerSecond,
-      longestTrendHistory,
+      longestTrendHistory
     });
   }
 
@@ -109,7 +109,7 @@ export default class Visualiser extends Component {
     );
 
     // Sort events by name in alphabetical asc order
-    whitelistedEvents = orderBy(whitelistedEvents, ["0"]);
+    whitelistedEvents = orderBy(whitelistedEvents, ['0']);
 
     whitelistedEvents.forEach(({ 0: name, 1: value }) => {
       updatedEvents[name] = {
@@ -163,7 +163,7 @@ export default class Visualiser extends Component {
       eventTrends,
       totalCount,
       totalEventsPerSecond,
-      longestTrendHistory,
+      longestTrendHistory
     } = this.state;
 
     return (

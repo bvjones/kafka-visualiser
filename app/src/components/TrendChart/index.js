@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import formatDisplayNumber from "../../utils/formatDisplayNumber";
-import styles from "./index.module.css";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import formatDisplayNumber from '../../utils/formatDisplayNumber';
+import styles from './index.module.css';
 
 export default class TrendChart extends Component {
   constructor(props) {
@@ -31,7 +31,7 @@ export default class TrendChart extends Component {
   updateAnimationState() {
     const { trendValues, maxTrendValues, longestTrendHistory } = this.props;
     const canvas = this.canvasRef.current;
-    const brush = canvas.getContext("2d");
+    const brush = canvas.getContext('2d');
 
     brush.clearRect(0, 0, canvas.width, canvas.height);
 

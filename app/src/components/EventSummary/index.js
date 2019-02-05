@@ -1,8 +1,8 @@
-import React, { Fragment } from "react";
-import PropTypes from "prop-types";
-import styles from "./index.module.css";
-import TrendChart from "../TrendChart";
-import formatDisplayNumber from "../../utils/formatDisplayNumber";
+import React, { Fragment } from 'react';
+import PropTypes from 'prop-types';
+import styles from './index.module.css';
+import TrendChart from '../TrendChart';
+import formatDisplayNumber from '../../utils/formatDisplayNumber';
 
 export default function EventSummary({
   name,
