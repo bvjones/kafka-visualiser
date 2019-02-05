@@ -37,7 +37,7 @@ const eventTypes = [
   // 'JoshMakeTea4',
   // 'AlbertIsAwesome4',
   // 'BenAndRick=TheBest4',
-  'Urmo',
+  // 'Urmo',
   // 'ChrisLovesKafka5',
   // 'spock',
   // 'AlbertIsAwesome5',
