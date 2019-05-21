@@ -70,7 +70,7 @@ module.exports = ({ app, promisify, consumer, socketIO, envVariables }) => {
                 'rewards_kafka_visualiser_email_disclosure_tracked_count',
                 1,
                 {
-                  product,
+                  productName: product,
                 },
               );
             }
