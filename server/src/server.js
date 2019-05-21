@@ -64,6 +64,9 @@ module.exports = ({ app, promisify, consumer, socketIO, envVariables }) => {
             const { eventName } = value.metadata;
 
             if (eventName === 'EmailDisclosureTracked') {
+              console.log(value.metadata);
+              console.log(value.payload);
+              console.log('**********');
               const productCode = get(value, 'payload.product') || 'UNKNOWN';
 
               metrics.counter(
