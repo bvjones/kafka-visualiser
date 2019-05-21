@@ -78,6 +78,12 @@ module.exports = ({ app, promisify, consumer, socketIO, envVariables }) => {
               );
             }
 
+            if (eventName === 'BrandPresentationInteraction') {
+              console.log(value.metadata);
+              console.log(value.payload);
+              console.log('**********');
+            }
+
             aggregatedEvents = {
               ...aggregatedEvents,
               [eventName]: {
