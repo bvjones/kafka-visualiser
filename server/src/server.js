@@ -2,6 +2,8 @@
 const path = require('path');
 const helmet = require('helmet');
 const expressStaticGzip = require('express-static-gzip');
+const metrics = require('@ctm/money.node.metric');
+const get = require('lodash.get');
 
 module.exports = ({ app, promisify, consumer, socketIO, envVariables }) => {
   let server;
@@ -60,6 +62,18 @@ module.exports = ({ app, promisify, consumer, socketIO, envVariables }) => {
               return;
             }
             const { eventName } = value.metadata;
+
+            if (eventName === 'EmailDisclosureTracked') {
+              const productCode = get(value, 'payload.product') || 'UNKNOWN';
+
+              metrics.counter(
+                'rewards_kafka_visualiser_email_disclosure_tracked_count',
+                1,
+                {
+                  productCode,
+                },
+              );
+            }
 
             aggregatedEvents = {
               ...aggregatedEvents,

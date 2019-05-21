@@ -18,11 +18,11 @@ client.on('connect', () => {
 });
 
 const eventTypes = [
-  'ChrisLovesKafka',
-  'JoshMakeTea',
-  'AlbertIsAwesome',
-  'BenAndRick=TheBest',
-  'helloMG',
+  // 'ChrisLovesKafka',
+  // 'JoshMakeTea',
+  // 'AlbertIsAwesome',
+  // 'BenAndRick=TheBest',
+  'EmailDisclosureTracked',
   // 'ChrisLovesKafka2',
   // 'JoshMakeTea2',
   // 'AlbertIsAwesome2',
@@ -128,6 +128,9 @@ producer.on('ready', () => {
                 eventName:
                   eventTypes[Math.floor(Math.random() * eventTypes.length)],
               },
+              payload: {
+                product: 'CC',
+              },
             }),
           ],
         },
@@ -139,7 +142,7 @@ producer.on('ready', () => {
         }
       },
     );
-  }, 100);
+  }, 1000);
 });
 
 producer.on('error', err => {
