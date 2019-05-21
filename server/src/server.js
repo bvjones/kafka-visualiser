@@ -64,24 +64,15 @@ module.exports = ({ app, promisify, consumer, socketIO, envVariables }) => {
             const { eventName } = value.metadata;
 
             if (eventName === 'EmailDisclosureTracked') {
-              console.log(value.metadata);
-              console.log(value.payload);
-              console.log('**********');
-              const productCode = get(value, 'payload.product') || 'UNKNOWN';
+              const product = get(value, 'payload.product') || 'UNKNOWN';
 
               metrics.counter(
                 'rewards_kafka_visualiser_email_disclosure_tracked_count',
                 1,
                 {
-                  productCode,
+                  product,
                 },
               );
-            }
-
-            if (eventName === 'BrandPresentationInteraction') {
-              console.log(value.metadata);
-              console.log(value.payload);
-              console.log('**********');
             }
 
             aggregatedEvents = {
