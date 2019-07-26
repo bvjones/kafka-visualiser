@@ -9,6 +9,7 @@ const getEnvVar = require('./getEnvVar');
 
 const server = require('./server');
 const consumer = require('./consumer');
+const constants = require('./constants');
 
 const container = createContainer();
 
@@ -35,6 +36,7 @@ container.register({
 });
 
 container.register({
+  constants: asValue(constants),
   consumer: asFunction(consumer).singleton(),
 });
 
