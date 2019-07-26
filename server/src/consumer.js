@@ -1,4 +1,4 @@
-module.exports = ({ kafka, envVariables }) => {
+module.exports = ({ kafka, envVariables, constants }) => {
   const { ConsumerGroup } = kafka;
 
   let consumer;
@@ -8,7 +8,10 @@ module.exports = ({ kafka, envVariables }) => {
       console.log('Starting Kafka consumer');
 
       consumer = new ConsumerGroup(
-        { kafkaHost: envVariables.KAFKA_HOST },
+        {
+          kafkaHost: envVariables.KAFKA_HOST,
+          groupId: constants.KAFKA_GROUP_ID,
+        },
         envVariables.TOPIC_NAME,
       );
 
