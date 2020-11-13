@@ -5,8 +5,9 @@ const kafka = require('kafka-node');
 const express = require('express');
 const socketIO = require('socket.io');
 const { promisify } = require('util');
-const getEnvVar = require('./getEnvVar');
+const cors = require('cors');
 
+const getEnvVar = require('./getEnvVar');
 const server = require('./server');
 const consumer = require('./consumer');
 const constants = require('./constants');
@@ -33,6 +34,7 @@ container.register({
   server: asFunction(server).singleton(),
   envVariables: asValue(envVariables),
   socketIO: asValue(socketIO),
+  cors: asValue(cors),
 });
 
 container.register({
