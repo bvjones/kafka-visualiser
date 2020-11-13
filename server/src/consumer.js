@@ -19,14 +19,14 @@ module.exports = ({ kafka, envVariables, constants }) => {
         console.log('Connected to Kafka');
       });
 
-      consumer.on('error', err => {
+      consumer.on('error', (err) => {
         console.error('Error with consumer', err);
       });
 
       return consumer;
     },
     stop: () => {
-      consumer.close(true, err => {
+      consumer.close(true, (err) => {
         console.error(err);
       });
     },
