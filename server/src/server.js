@@ -63,7 +63,6 @@ module.exports = ({
           let aggregatedEvents = {};
 
           consumerInstance.on('message', (message) => {
-            // console.log('consumed', message);
             let value;
 
             try {
@@ -86,7 +85,6 @@ module.exports = ({
 
           setInterval(() => {
             if (Object.keys(aggregatedEvents).length > 0) {
-              console.log('emitting', aggregatedEvents);
               io.emit('kafkaEvents', aggregatedEvents);
               aggregatedEvents = {};
             }
