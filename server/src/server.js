@@ -3,7 +3,14 @@ const path = require('path');
 const helmet = require('helmet');
 const expressStaticGzip = require('express-static-gzip');
 
-module.exports = ({ app, promisify, consumer, socketIO, envVariables }) => {
+module.exports = ({
+  app,
+  promisify,
+  consumer,
+  socketIO,
+  envVariables,
+  cors,
+}) => {
   let server;
   let io;
 
@@ -15,8 +22,10 @@ module.exports = ({ app, promisify, consumer, socketIO, envVariables }) => {
             frameguard: {
               action: 'deny',
             },
+            contentSecurityPolicy: false,
           }),
         );
+        app.use(cors());
 
         const srcFolder = '../../app/build';
 
@@ -42,15 +51,19 @@ module.exports = ({ app, promisify, consumer, socketIO, envVariables }) => {
           console.log(`Listening on ${server.address().port}`);
           const consumerInstance = consumer.start();
 
-          io = socketIO(server);
+          io = socketIO(server, { cors: true, origins: '*:*' });
 
-          io.on('connection', socket => {
-            console.log('Connection established ', socket.id);
+          let connections = 0;
+          io.on('connection', (socket) => {
+            connections += 1;
+            console.log('Connection established', socket.id);
+            console.log(`Total connections: ${connections}`);
           });
 
           let aggregatedEvents = {};
 
-          consumerInstance.on('message', message => {
+          consumerInstance.on('message', (message) => {
+            // console.log('consumed', message);
             let value;
 
             try {
@@ -73,6 +86,7 @@ module.exports = ({ app, promisify, consumer, socketIO, envVariables }) => {
 
           setInterval(() => {
             if (Object.keys(aggregatedEvents).length > 0) {
+              console.log('emitting', aggregatedEvents);
               io.emit('kafkaEvents', aggregatedEvents);
               aggregatedEvents = {};
             }
