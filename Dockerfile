@@ -1,20 +1,21 @@
-FROM node:8-alpine
+FROM node:12-alpine
 
-ENV NPM_CONFIG_LOGLEVEL warn
+# Suppress npm info logs that are on by default
+ENV NPM_CONFIG_LOGLEVEL=warn
 
-ADD . /src
+# Suppress npm update notification
+ENV NO_UPDATE_NOTIFIER=true
 
-WORKDIR /src/app
+# Create the directory that will contain the app, and make subsequent commands run from this directory
+WORKDIR /src
 
-RUN npm install
-RUN npm run build
+COPY . .
 
-WORKDIR /src/server
-RUN npm install
+RUN cd /src/app && npm i && npm run build && \
+  cd /src/server && npm i
 
 EXPOSE 3000
 
 USER nobody
 
-WORKDIR /src/
 CMD ["node", "server/src"]

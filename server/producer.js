@@ -11,8 +11,11 @@ client.on('connect', () => {
   console.log('client connected');
   client.createTopics(
     [{ topic: process.env.TOPIC_NAME, partitions: 1, replicationFactor: 1 }],
-    error => {
-      console.error(error);
+    (err, result) => {
+      if (err) {
+        return console.error('create topics error', err);
+      }
+      return console.log('create topics result', result);
     },
   );
 });
@@ -132,9 +135,9 @@ producer.on('ready', () => {
           ],
         },
       ],
-      err => {
+      (err) => {
         if (err) {
-          console.error(err);
+          console.error('Producing events err', err);
           process.exit(1);
         }
       },
@@ -142,6 +145,6 @@ producer.on('ready', () => {
   }, 100);
 });
 
-producer.on('error', err => {
+producer.on('error', (err) => {
   console.error('Producer error: ', err);
 });
