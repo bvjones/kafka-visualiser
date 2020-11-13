@@ -11,8 +11,8 @@ WORKDIR /src
 
 COPY . .
 
-RUN cd app && npm i && npm run build && \
-  cd ../server && npm i && npm run build
+RUN cd /src/app && npm i && npm run build && \
+  cd /src/server && npm i
 
 EXPOSE 3000
 
