@@ -28,7 +28,7 @@
     "express-static-gzip": "^2.1.0",
     "helmet": "^4.2.0",
     "kafka-node": "^5.0.0",
-    "lodash": "^4.17.20",
+    "lodash": "^4.17.21",
     "socket.io": "^3.0.1",
     "uuid": "^8.3.1"
   },
